@@ -97,17 +97,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      alignment: Alignment.center,
-                      child: LMTextView(
-                        text: "Chats",
-                        textStyle:
-                            Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  color: kBlackColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                      ),
+                    LMTextView(
+                      text: "Chats",
+                      textStyle:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: kBlackColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                     ),
                     //   communityName ??
                     // ),

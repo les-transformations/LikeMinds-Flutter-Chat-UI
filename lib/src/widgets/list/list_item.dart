@@ -79,8 +79,9 @@ class LMListItem extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: title ??
-                                      const LMTextView(
-                                        text: "Dummy Text",
+                                      LMTextView(
+                                        text: chatroom?.header ??
+                                            "Dummy Title Text",
                                         textStyle: TextStyle(fontSize: 12),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,

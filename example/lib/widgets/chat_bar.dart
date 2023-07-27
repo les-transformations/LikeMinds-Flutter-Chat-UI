@@ -563,7 +563,18 @@ class _ChatBarState extends State<ChatBar> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: LMReplyItem(replyToConversation: replyToConversation),
+                child: LMReplyItem(
+                  replyToConversation: replyToConversation,
+                  borderRadius: 10,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                  subtitle: replyToConversation != null
+                      ? getChatItemAttachmentTile(
+                          replyConversationAttachments ?? [],
+                          replyToConversation!,
+                        )
+                      : null,
+                ),
               ),
             ),
             IconButton(

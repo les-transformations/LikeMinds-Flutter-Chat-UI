@@ -155,6 +155,8 @@ Widget getChatItemAttachmentTile(
           icon: iconData,
           color: kGreyColor,
           size: 16,
+          boxPadding: 0,
+          boxSize: 16,
         ),
         kHorizontalPaddingSmall,
         Expanded(

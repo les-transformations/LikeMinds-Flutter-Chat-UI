@@ -366,24 +366,24 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           backgroundColor: Colors.white,
           floatingActionButton: showScrollButton
               ? Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
+                  padding: EdgeInsets.only(bottom: 18.h),
                   child: Container(
                     height: 42,
                     width: 42,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(21),
-                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(24),
+                      color: primary.shade200,
                       boxShadow: [
                         BoxShadow(
-                          offset: const Offset(0, 4),
-                          blurRadius: 25,
-                          color: kBlackColor.withOpacity(0.3),
+                          offset: const Offset(0, 2),
+                          blurRadius: 8,
+                          color: kBlackColor.withOpacity(0.2),
                         )
                       ],
                     ),
                     child: Center(
                       child: LMIconButton(
-                        containerSize: 36,
+                        containerSize: 42,
                         onTap: (active) {
                           _scrollToBottom();
                         },
@@ -392,8 +392,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           icon: Icons.keyboard_arrow_down,
                           color: Colors.white,
                           size: 24,
-                          boxPadding: 0,
-                          boxSize: 24,
+                          boxPadding: 6,
+                          boxSize: 36,
                         ),
                       ),
                     ),
@@ -478,7 +478,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           margin: const EdgeInsets.symmetric(
                                               vertical: 5),
                                           padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
+                                            horizontal: 6,
                                             vertical: 6,
                                           ),
                                           decoration: BoxDecoration(
@@ -511,12 +511,16 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                               item.replyId.toString()]
                                           : null
                                       : null;
+                                  CustomPopupMenuController
+                                      chatBubbleIndividualController =
+                                      CustomPopupMenuController();
                                   return item.userId == user!.id
                                       ? LMChatBubble(
                                           key: Key(item.id.toString()),
                                           isSent: item.userId == user!.id,
                                           backgroundColor: primary.shade500,
-                                          menuController: _customMenuController,
+                                          menuController:
+                                              chatBubbleIndividualController,
                                           menu: ClipRRect(
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -555,7 +559,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                                 item,
                                                           ),
                                                         );
-                                                        _customMenuController
+                                                        chatBubbleIndividualController
                                                             .hideMenu();
                                                       },
                                                       leading: const LMIcon(
@@ -582,7 +586,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                         ).then((value) {
                                                           toast(
                                                               "Copied to clipboard");
-                                                          _customMenuController
+                                                          chatBubbleIndividualController
                                                               .hideMenu();
                                                         });
                                                       },
@@ -598,40 +602,43 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                         ),
                                                       ),
                                                     ),
-                                                    kVerticalPaddingMedium,
-                                                    Visibility(
-                                                      visible:
-                                                          checkEditPermissions(
-                                                              item),
-                                                      child: ListTile(
-                                                        onTap: () async {
-                                                          _convActionBloc.add(
-                                                            EditingConversation(
-                                                              chatroomId:
-                                                                  chatroom!.id,
-                                                              conversationId:
-                                                                  item.id,
-                                                              editConversation:
-                                                                  item,
+                                                    checkEditPermissions(item)
+                                                        ? ListTile(
+                                                            onTap: () async {
+                                                              _convActionBloc
+                                                                  .add(
+                                                                EditingConversation(
+                                                                  chatroomId:
+                                                                      chatroom!
+                                                                          .id,
+                                                                  conversationId:
+                                                                      item.id,
+                                                                  editConversation:
+                                                                      item,
+                                                                ),
+                                                              );
+                                                              chatBubbleIndividualController
+                                                                  .hideMenu();
+                                                            },
+                                                            leading:
+                                                                const LMIcon(
+                                                              type: LMIconType
+                                                                  .svg,
+                                                              assetPath:
+                                                                  ssEditIcon,
+                                                              size: 24,
                                                             ),
-                                                          );
-                                                          _customMenuController
-                                                              .hideMenu();
-                                                        },
-                                                        leading: const LMIcon(
-                                                          type: LMIconType.svg,
-                                                          assetPath: ssEditIcon,
-                                                          size: 24,
-                                                        ),
-                                                        title: const LMTextView(
-                                                          text: "Edit",
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    kVerticalPaddingMedium,
+                                                            title:
+                                                                const LMTextView(
+                                                              text: "Edit",
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const SizedBox
+                                                            .shrink(),
                                                     Visibility(
                                                       visible:
                                                           checkDeletePermissions(
@@ -650,7 +657,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                                       .build());
                                                           if (response
                                                               .success) {
-                                                            _customMenuController
+                                                            item.deletedByUserId =
+                                                                user!.id;
+                                                            chatBubbleIndividualController
                                                                 .hideMenu();
                                                             rebuildConversationList
                                                                     .value =
@@ -697,12 +706,30 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                               ),
                                             );
                                           },
-                                          outsideFooter: LMTextView(
-                                            text: item.createdAt,
-                                            textStyle: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black54,
-                                            ),
+                                          outsideFooter: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Visibility(
+                                                visible:
+                                                    item.isEdited != null &&
+                                                        item.isEdited!,
+                                                child: const LMTextView(
+                                                  text: "Edited • ",
+                                                  textStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                              LMTextView(
+                                                text: item.createdAt,
+                                                textStyle: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           content: LMChatContent(
                                             conversation: item,
@@ -761,7 +788,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           key: Key(item.id.toString()),
                                           isSent: item.userId == user!.id,
                                           backgroundColor: secondary.shade100,
-                                          menuController: _customMenuController,
+                                          menuController:
+                                              chatBubbleIndividualController,
                                           menu: ClipRRect(
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -800,7 +828,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                                 item,
                                                           ),
                                                         );
-                                                        _customMenuController
+                                                        chatBubbleIndividualController
                                                             .hideMenu();
                                                       },
                                                       leading: const LMIcon(
@@ -827,7 +855,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                         ).then((value) {
                                                           toast(
                                                               "Copied to clipboard");
-                                                          _customMenuController
+                                                          chatBubbleIndividualController
                                                               .hideMenu();
                                                         });
                                                       },
@@ -843,40 +871,43 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                         ),
                                                       ),
                                                     ),
-                                                    kVerticalPaddingMedium,
-                                                    Visibility(
-                                                      visible:
-                                                          checkEditPermissions(
-                                                              item),
-                                                      child: ListTile(
-                                                        onTap: () async {
-                                                          _convActionBloc.add(
-                                                            EditingConversation(
-                                                              chatroomId:
-                                                                  chatroom!.id,
-                                                              conversationId:
-                                                                  item.id,
-                                                              editConversation:
-                                                                  item,
+                                                    checkEditPermissions(item)
+                                                        ? ListTile(
+                                                            onTap: () async {
+                                                              _convActionBloc
+                                                                  .add(
+                                                                EditingConversation(
+                                                                  chatroomId:
+                                                                      chatroom!
+                                                                          .id,
+                                                                  conversationId:
+                                                                      item.id,
+                                                                  editConversation:
+                                                                      item,
+                                                                ),
+                                                              );
+                                                              chatBubbleIndividualController
+                                                                  .hideMenu();
+                                                            },
+                                                            leading:
+                                                                const LMIcon(
+                                                              type: LMIconType
+                                                                  .svg,
+                                                              assetPath:
+                                                                  ssEditIcon,
+                                                              size: 24,
                                                             ),
-                                                          );
-                                                          _customMenuController
-                                                              .hideMenu();
-                                                        },
-                                                        leading: const LMIcon(
-                                                          type: LMIconType.svg,
-                                                          assetPath: ssEditIcon,
-                                                          size: 24,
-                                                        ),
-                                                        title: const LMTextView(
-                                                          text: "Edit",
-                                                          textStyle: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    kVerticalPaddingMedium,
+                                                            title:
+                                                                const LMTextView(
+                                                              text: "Edit",
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const SizedBox
+                                                            .shrink(),
                                                     Visibility(
                                                       visible:
                                                           checkDeletePermissions(
@@ -895,12 +926,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                                       .build());
                                                           if (response
                                                               .success) {
-                                                            _customMenuController
+                                                            chatBubbleIndividualController
                                                                 .hideMenu();
-                                                            setState(() {
-                                                              item.deletedByUserId =
-                                                                  user!.id;
-                                                            });
+                                                            rebuildConversationList
+                                                                    .value =
+                                                                !rebuildConversationList
+                                                                    .value;
                                                             toast(
                                                                 "Message deleted");
                                                           }

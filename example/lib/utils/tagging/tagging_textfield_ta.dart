@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:flutter_chat_ui_sample/service/likeminds_service.dart';
 import 'package:flutter_chat_ui_sample/service/service_locator.dart';
-import 'package:flutter_chat_ui_sample/utils/constants/ui_constants.dart';
 import 'package:flutter_chat_ui_sample/utils/imports.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:flutter_typeahead_mm/flutter_typeahead.dart';
-import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 
 class LMTextField extends StatefulWidget {
   final bool isDown;

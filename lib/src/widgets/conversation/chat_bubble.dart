@@ -56,7 +56,7 @@ class LMChatBubble extends StatefulWidget {
   final LMIconButton? reactionButton;
   final LMReplyItem? replyItem;
   final LMTextView? outsideTitle;
-  final LMTextView? outsideFooter;
+  final Widget? outsideFooter;
   final Widget? mediaWidget;
   // final LMReactionBar? reactionBar;
 
@@ -127,269 +127,282 @@ class _LMChatBubbleState extends State<LMChatBubble> {
       onLongPress: () {
         debugPrint("Long Pressed");
         if (isDeleted) return;
-        // _controller.showMenu();
+        _controller.showMenu();
       },
       onTap: () {
         debugPrint("Tapped");
         if (isDeleted) return;
-        // _controller.hideMenu();
+        _controller.hideMenu();
       },
-      child: Swipeable(
-        dismissThresholds: const {SwipeDirection.startToEnd: 0.2},
-        movementDuration: const Duration(milliseconds: 50),
-        key: ValueKey(conversation.id),
-        onSwipe: (direction) {
-          if (widget.onReply != null) {
-            widget.onReply!(conversation);
-          }
-        },
-        background: Padding(
-          padding: EdgeInsets.only(
-            left: 2.w,
-            right: 2.w,
-            top: 0.2.h,
-            bottom: 0.2.h,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widget.replyIcon ??
-                  const LMIcon(
-                    type: LMIconType.icon,
-                    icon: Icons.reply_outlined,
-                    color: kLinkColor,
-                    size: 28,
-                    boxSize: 28,
-                    boxPadding: 0,
-                  ),
-            ],
-          ),
-        ),
-        direction: SwipeDirection.startToEnd,
-        child: CustomPopupMenu(
-          controller: _controller,
-          pressType: PressType.longPress,
-          showArrow: false,
-          verticalMargin: 1.h,
-          menuBuilder: () => widget.menu,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                crossAxisAlignment:
-                    isSent ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      child: Stack(
+        children: [
+          Swipeable(
+            dismissThresholds: const {SwipeDirection.startToEnd: 0.2},
+            movementDuration: const Duration(milliseconds: 50),
+            key: ValueKey(conversation.id),
+            onSwipe: (direction) {
+              if (widget.onReply != null) {
+                widget.onReply!(conversation);
+              }
+            },
+            background: Padding(
+              padding: EdgeInsets.only(
+                left: 2.w,
+                right: 2.w,
+                top: 0.2.h,
+                bottom: 0.2.h,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: widget.outsideTitle != null ? 10 : 0),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: widget.avatar != null ? 56.0 : 32.0,
-                    ),
-                    child: widget.outsideTitle ?? const SizedBox(),
-                  ),
-                  const SizedBox(height: 4),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 0.5.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: isSent
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        !isSent
-                            ? widget.avatar ?? const SizedBox()
-                            // LMProfilePicture(
-                            //     fallbackText: widget.sender.name,
-                            //     imageUrl: widget.sender.imageUrl,
-                            //     size: 32,
-                            //   )
-                            : const SizedBox(),
-                        const SizedBox(width: 8),
-                        Container(
-                          constraints: BoxConstraints(
-                            minHeight: 4.h,
-                            minWidth: 10.w,
-                            maxWidth: 60.w,
-                          ),
-                          padding: const EdgeInsets.all(12.0),
-                          decoration: BoxDecoration(
-                            color: widget.backgroundColor ?? Colors.white,
-                            borderRadius: widget.borderRadius ??
-                                BorderRadius.circular(
-                                  widget.borderRadiusNum ?? 6,
-                                ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: isSent
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            children: [
-                              Visibility(
-                                visible: replyingTo != null && !isDeleted,
-                                maintainState: true,
-                                maintainSize: false,
-                                child: const SizedBox(),
-                              ),
-                              widget.replyItem == null
-                                  ? replyingTo != null
-                                      ? isDeleted
-                                          ? const SizedBox.shrink()
-                                          : LMReplyItem(
-                                              replyToConversation: replyingTo!,
-                                              backgroundColor: Colors.white,
-                                              highlightColor: Theme.of(context)
-                                                  .primaryColor,
-                                              title: LMTextView(
-                                                text: replyingTo!.member!.name,
-                                                textStyle: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              subtitle: LMTextView(
-                                                text: replyingTo!.answer,
-                                                textStyle: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            )
-                                      : const SizedBox()
-                                  : isDeleted
-                                      ? const SizedBox.shrink()
-                                      : widget.replyItem!,
-                              replyingTo != null
-                                  ? const SizedBox(height: 8)
-                                  : const SizedBox(),
-                              isSent
-                                  ? const SizedBox()
-                                  : widget.title ?? const SizedBox(),
-                              // LMTextView(
-                              //   text: widget.sender.name,
-                              //   textStyle: TextStyle(
-                              //     fontSize: 12,
-                              //     color: isSent
-                              //         ? Colors.black.withOpacity(0.6)
-                              //         : widget.sentColor ??
-                              //             Theme.of(context).primaryColor,
-                              //   ),
-                              // ),
-                              isDeleted
-                                  ? conversation.deletedByUserId ==
-                                          conversation.userId
-                                      ? LMTextView(
-                                          text: conversation.userId == 1
-                                              ? 'You deleted this message'
-                                              : "This message was deleted",
-                                          textStyle: widget.content!.textStyle!
-                                              .copyWith(
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        )
-                                      : LMTextView(
-                                          text:
-                                              "This message was deleted by the Community Manager",
-                                          textStyle: widget.content!.textStyle!
-                                              .copyWith(
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        )
-                                  : replyingTo != null
-                                      ? Align(
-                                          alignment: Alignment.topLeft,
-                                          child: widget.content ??
-                                              LMChatContent(
-                                                conversation:
-                                                    widget.conversation,
-                                                linkStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                textStyle: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                        )
-                                      : widget.content ??
-                                          LMChatContent(
-                                            conversation: widget.conversation,
-                                            linkStyle: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            textStyle: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            visibleLines: 2,
-                                            animation: true,
-                                          ),
-                              if (widget.mediaWidget != null && !isDeleted)
-                                const SizedBox(height: 8),
-                              isDeleted
-                                  ? const SizedBox.shrink()
-                                  : widget.mediaWidget ?? const SizedBox(),
-                              if (widget.mediaWidget != null && !isDeleted)
-                                const SizedBox(height: 8),
-                              if (widget.footer != null &&
-                                  widget.footer!.isNotEmpty &&
-                                  !isDeleted)
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: widget.footer!,
-                                ),
-                              ((widget.conversation.hasFiles == null ||
-                                          !widget.conversation.hasFiles!) ||
-                                      (widget.conversation
-                                                  .attachmentsUploaded !=
-                                              null &&
-                                          widget.conversation
-                                              .attachmentsUploaded!) ||
-                                      isDeleted)
-                                  ? const SizedBox()
-                                  : const LMIcon(
-                                      type: LMIconType.icon,
-                                      icon: Icons.timer_outlined,
-                                      size: 12,
-                                    ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        isSent
-                            ? widget.avatar ?? const SizedBox()
-                            // LMProfilePicture(
-                            //     fallbackText: widget.sender.name,
-                            //     imageUrl: widget.sender.imageUrl,
-                            //     size: 32,
-                            //   )
-                            : const SizedBox(),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: widget.avatar != null ? 56.0 : 32.0,
-                      left: widget.avatar != null ? 56.0 : 32.0,
-                    ),
-                    child: widget.outsideFooter ?? const SizedBox(),
-                  ),
+                  widget.replyIcon ??
+                      const LMIcon(
+                        type: LMIconType.icon,
+                        icon: Icons.reply_outlined,
+                        color: kLinkColor,
+                        size: 28,
+                        boxSize: 28,
+                        boxPadding: 0,
+                      ),
                 ],
               ),
-            ],
+            ),
+            direction: SwipeDirection.startToEnd,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  crossAxisAlignment: isSent
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: widget.outsideTitle != null ? 10 : 0),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: widget.avatar != null ? 56.0 : 32.0,
+                      ),
+                      child: widget.outsideTitle ?? const SizedBox(),
+                    ),
+                    const SizedBox(height: 4),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 0.5.h,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: isSent
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          !isSent
+                              ? widget.avatar ?? const SizedBox()
+                              // LMProfilePicture(
+                              //     fallbackText: widget.sender.name,
+                              //     imageUrl: widget.sender.imageUrl,
+                              //     size: 32,
+                              //   )
+                              : const SizedBox(),
+                          const SizedBox(width: 8),
+                          Container(
+                            constraints: BoxConstraints(
+                              minHeight: 4.h,
+                              minWidth: 10.w,
+                              maxWidth: 60.w,
+                            ),
+                            padding: const EdgeInsets.all(12.0),
+                            decoration: BoxDecoration(
+                              color: widget.backgroundColor ?? Colors.white,
+                              borderRadius: widget.borderRadius ??
+                                  BorderRadius.circular(
+                                    widget.borderRadiusNum ?? 6,
+                                  ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: isSent
+                                  ? CrossAxisAlignment.end
+                                  : CrossAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible: replyingTo != null && !isDeleted,
+                                  maintainState: true,
+                                  maintainSize: false,
+                                  child: const SizedBox(),
+                                ),
+                                widget.replyItem == null
+                                    ? replyingTo != null
+                                        ? isDeleted
+                                            ? const SizedBox.shrink()
+                                            : LMReplyItem(
+                                                replyToConversation:
+                                                    replyingTo!,
+                                                backgroundColor: Colors.white,
+                                                highlightColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                title: LMTextView(
+                                                  text:
+                                                      replyingTo!.member!.name,
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                subtitle: LMTextView(
+                                                  text: replyingTo!.answer,
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              )
+                                        : const SizedBox()
+                                    : isDeleted
+                                        ? const SizedBox.shrink()
+                                        : widget.replyItem!,
+                                replyingTo != null
+                                    ? const SizedBox(height: 8)
+                                    : const SizedBox(),
+                                isSent
+                                    ? const SizedBox()
+                                    : widget.title ?? const SizedBox(),
+                                // LMTextView(
+                                //   text: widget.sender.name,
+                                //   textStyle: TextStyle(
+                                //     fontSize: 12,
+                                //     color: isSent
+                                //         ? Colors.black.withOpacity(0.6)
+                                //         : widget.sentColor ??
+                                //             Theme.of(context).primaryColor,
+                                //   ),
+                                // ),
+                                isDeleted
+                                    ? conversation.deletedByUserId ==
+                                            conversation.userId
+                                        ? LMTextView(
+                                            text: conversation.userId == 1
+                                                ? 'You deleted this message'
+                                                : "This message was deleted",
+                                            textStyle: widget
+                                                .content!.textStyle!
+                                                .copyWith(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          )
+                                        : LMTextView(
+                                            text:
+                                                "This message was deleted by the Community Manager",
+                                            textStyle: widget
+                                                .content!.textStyle!
+                                                .copyWith(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          )
+                                    : replyingTo != null
+                                        ? Align(
+                                            alignment: Alignment.topLeft,
+                                            child: widget.content ??
+                                                LMChatContent(
+                                                  conversation:
+                                                      widget.conversation,
+                                                  linkStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                          )
+                                        : widget.content ??
+                                            LMChatContent(
+                                              conversation: widget.conversation,
+                                              linkStyle: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              textStyle: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              visibleLines: 2,
+                                              animation: true,
+                                            ),
+                                if (widget.mediaWidget != null && !isDeleted)
+                                  const SizedBox(height: 8),
+                                isDeleted
+                                    ? const SizedBox.shrink()
+                                    : widget.mediaWidget ?? const SizedBox(),
+                                if (widget.mediaWidget != null && !isDeleted)
+                                  const SizedBox(height: 8),
+                                if (widget.footer != null &&
+                                    widget.footer!.isNotEmpty &&
+                                    !isDeleted)
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: widget.footer!,
+                                  ),
+                                ((widget.conversation.hasFiles == null ||
+                                            !widget.conversation.hasFiles!) ||
+                                        (widget.conversation
+                                                    .attachmentsUploaded !=
+                                                null &&
+                                            widget.conversation
+                                                .attachmentsUploaded!) ||
+                                        isDeleted)
+                                    ? const SizedBox()
+                                    : const LMIcon(
+                                        type: LMIconType.icon,
+                                        icon: Icons.timer_outlined,
+                                        size: 12,
+                                      ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          isSent
+                              ? widget.avatar ?? const SizedBox()
+                              // LMProfilePicture(
+                              //     fallbackText: widget.sender.name,
+                              //     imageUrl: widget.sender.imageUrl,
+                              //     size: 32,
+                              //   )
+                              : const SizedBox(),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: widget.avatar != null ? 56.0 : 32.0,
+                        left: widget.avatar != null ? 56.0 : 32.0,
+                      ),
+                      child: widget.outsideFooter ?? const SizedBox(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
+          AbsorbPointer(
+            child: CustomPopupMenu(
+              controller: _controller,
+              pressType: PressType.longPress,
+              showArrow: false,
+              verticalMargin: 1.h,
+              menuBuilder: () => widget.menu,
+              child: Container(),
+            ),
+          ),
+        ],
       ),
     );
   }

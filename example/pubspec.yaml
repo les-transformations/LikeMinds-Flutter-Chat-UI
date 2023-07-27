@@ -68,7 +68,6 @@ dependencies:
     path: ../
 
   likeminds_chat_fl:
-    path: ../../LikeMinds-Flutter-GroupChat-SDK/
 
 dev_dependencies:
   flutter_test:
@@ -104,6 +103,7 @@ flutter:
     - assets/icons/reply.svg
     - assets/icons/select.svg
     - assets/icons/send.svg
+    - assets/icons/copy.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
