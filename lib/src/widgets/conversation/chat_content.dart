@@ -22,7 +22,7 @@ class LMChatContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpandableText(
+    return conversation.answer.isNotEmpty ? ExpandableText(
       conversation.answer,
       expandText: "",
       animation: animation ?? true,
@@ -32,6 +32,6 @@ class LMChatContent extends StatelessWidget {
       textAlign: TextAlign.left,
       style: textStyle ?? Theme.of(context).textTheme.bodyMedium,
       linkEllipsis: true,
-    );
+    ) : const SizedBox.shrink();
   }
 }

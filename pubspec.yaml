@@ -18,15 +18,14 @@ dependencies:
   timeago: 
   flutter_svg:
   shimmer:
-  chewie:
   carousel_slider:
-  video_player: 
   visibility_detector: 
   cached_network_image: 
   url_launcher: 
   swipe_to_action:
   video_thumbnail:
   custom_pop_up_menu: 
+  flutter_portal:
 
 dev_dependencies:
   flutter_test:
