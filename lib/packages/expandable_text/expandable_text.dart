@@ -417,11 +417,13 @@ class ExpandableTextState extends State<ExpandableText>
       // Add a TextSpan for the URL
       textSpans.add(TextSpan(
         text: isTag ? TaggingHelper.decodeString(link).keys.first : link,
-        style: widget.linkStyle ??
-            const TextStyle(
-              fontSize: 12,
-              color: kLinkColor,
-            ),
+        style: isTag
+            ? widget.mentionStyle
+            : widget.linkStyle ??
+                const TextStyle(
+                  fontSize: 12,
+                  color: kLinkColor,
+                ),
         recognizer: TapGestureRecognizer()
           ..onTap = () async {
             if (!isTag) {
