@@ -89,7 +89,7 @@ class LMListItem extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                             subtitle ??
                                 const LMTextView(
                                   text: "Dummy Subtitle Text",

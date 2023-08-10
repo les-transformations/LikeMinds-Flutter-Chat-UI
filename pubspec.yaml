@@ -1,6 +1,6 @@
 name: likeminds_chat_ui_fl
 description: A new Flutter package project.
-version: 0.0.1
+version: 1.0.1
 publish_to: none
 
 environment:
@@ -18,9 +18,7 @@ dependencies:
   timeago: 
   flutter_svg:
   shimmer:
-  chewie:
   carousel_slider:
-  video_player: 
   visibility_detector: 
   cached_network_image: 
   url_launcher: 
