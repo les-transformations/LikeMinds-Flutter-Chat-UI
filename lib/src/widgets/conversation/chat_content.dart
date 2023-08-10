@@ -10,6 +10,7 @@ class LMChatContent extends StatelessWidget {
     this.visibleLines,
     this.textStyle,
     this.linkStyle,
+    this.tagStyle,
     this.animation,
   });
 
@@ -18,20 +19,27 @@ class LMChatContent extends StatelessWidget {
   final int? visibleLines;
   final TextStyle? textStyle;
   final TextStyle? linkStyle;
+  final TextStyle? tagStyle;
   final bool? animation;
 
   @override
   Widget build(BuildContext context) {
-    return conversation.answer.isNotEmpty ? ExpandableText(
-      conversation.answer,
-      expandText: "",
-      animation: animation ?? true,
-      maxLines: visibleLines ?? 4,
-      linkStyle: linkStyle ??
-          Theme.of(context).textTheme.bodyMedium!.copyWith(color: kLinkColor),
-      textAlign: TextAlign.left,
-      style: textStyle ?? Theme.of(context).textTheme.bodyMedium,
-      linkEllipsis: true,
-    ) : const SizedBox.shrink();
+    return conversation.answer.isNotEmpty
+        ? ExpandableText(
+            conversation.answer,
+            expandText: "",
+            animation: animation ?? true,
+            maxLines: visibleLines ?? 4,
+            mentionStyle: tagStyle,
+            linkStyle: linkStyle ??
+                const TextStyle(
+                  color: kLinkColor,
+                  fontSize: 14,
+                ),
+            textAlign: TextAlign.left,
+            style: textStyle ?? Theme.of(context).textTheme.bodyMedium,
+            linkEllipsis: true,
+          )
+        : const SizedBox.shrink();
   }
 }

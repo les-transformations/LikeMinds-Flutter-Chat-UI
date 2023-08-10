@@ -1,6 +1,6 @@
 name: likeminds_chat_ui_fl
 description: A new Flutter package project.
-version: 0.0.1
+version: 1.0.1
 publish_to: none
 
 environment:
@@ -25,7 +25,6 @@ dependencies:
   swipe_to_action:
   video_thumbnail:
   custom_pop_up_menu: 
-  flutter_portal:
 
 dev_dependencies:
   flutter_test:

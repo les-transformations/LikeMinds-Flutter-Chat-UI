@@ -87,6 +87,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
   late Conversation conversation;
   late Conversation? replyingTo;
   late User sender;
+  late CustomPopupMenuController _menuController;
 
   bool isSent = false;
   bool isDeleted = false;
@@ -101,6 +102,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
     replyingTo = widget.replyingTo;
     isEdited = widget.conversation.isEdited ?? false;
     isDeleted = widget.conversation.deletedByUserId != null;
+    _menuController = CustomPopupMenuController();
   }
 
   @override
@@ -175,15 +177,15 @@ class _LMChatBubbleState extends State<LMChatBubble> {
               SizedBox(height: widget.outsideTitle != null ? 10 : 0),
               Padding(
                 padding: EdgeInsets.only(
-                  left: widget.avatar != null ? 56.0 : 32.0,
+                  left: widget.avatar != null ? 48.0 : 28.0,
                 ),
                 child: widget.outsideTitle ?? const SizedBox(),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2),
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 18,
-                  vertical: 0.5.h,
+                  vertical: 6,
                 ),
                 child: Row(
                   mainAxisAlignment:
@@ -193,16 +195,23 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                     !isSent
                         ? widget.avatar ?? const SizedBox()
                         : const SizedBox(),
-                    const SizedBox(width: 8),
-                    // Stack(
-                    //   children: [
+                    const SizedBox(width: 4),
                     CustomPopupMenu(
                       controller: widget.menuController,
                       pressType: PressType.longPress,
                       showArrow: false,
                       verticalMargin: 2.h,
                       horizontalMargin: isSent ? 2.w : 18.w,
-                      menuBuilder: () => !isDeleted ? widget.menu : SizedBox(),
+                      menuBuilder: () => !isDeleted
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                print("Menu object tapped");
+                                widget.menuController.hideMenu();
+                              },
+                              child: widget.menu,
+                            )
+                          : SizedBox(),
                       child: Container(
                         constraints: BoxConstraints(
                           minHeight: 4.h,
@@ -270,23 +279,14 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                             isDeleted
                                 ? conversation.deletedByUserId ==
                                         conversation.userId
-                                    ? conversation.deletedByUserId == sender.id
-                                        ? LMTextView(
-                                            text: 'You deleted this message.',
-                                            textStyle: widget
-                                                .content!.textStyle!
-                                                .copyWith(
-                                              fontStyle: FontStyle.italic,
-                                            ),
-                                          )
-                                        : LMTextView(
-                                            text: "This message was deleted.",
-                                            textStyle: widget
-                                                .content!.textStyle!
-                                                .copyWith(
-                                              fontStyle: FontStyle.italic,
-                                            ),
-                                          )
+                                    ? LMTextView(
+                                        text:
+                                            "This message was deleted by the user.",
+                                        textStyle:
+                                            widget.content!.textStyle!.copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      )
                                     : LMTextView(
                                         text:
                                             "This message was deleted by the Community Manager",
@@ -363,35 +363,17 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                         ),
                       ),
                     ),
-
-                    //             AbsorbPointer(
-                    //   child: CustomPopupMenu(
-                    //     controller: widget.menuController,
-                    //     pressType: PressType.longPress,
-                    //     showArrow: false,
-                    //     verticalMargin: 2.h,
-                    //     horizontalMargin: isSent ? -18.w : 18.w,
-                    //     menuBuilder: () => widget.menu,
-                    //     child: Container(),
-                    //   ),
-                    // ),],
-                    // ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
                     isSent
                         ? widget.avatar ?? const SizedBox()
-                        // LMProfilePicture(
-                        //     fallbackText: widget.sender.name,
-                        //     imageUrl: widget.sender.imageUrl,
-                        //     size: 32,
-                        //   )
                         : const SizedBox(),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  right: widget.avatar != null ? 56.0 : 32.0,
-                  left: widget.avatar != null ? 56.0 : 32.0,
+                  right: widget.avatar != null ? 48.0 : 24.0,
+                  left: widget.avatar != null ? 48.0 : 28.0,
                 ),
                 child: widget.outsideFooter ?? const SizedBox(),
               ),
