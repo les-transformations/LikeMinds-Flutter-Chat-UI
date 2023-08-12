@@ -108,13 +108,11 @@ class _LMChatBubbleState extends State<LMChatBubble> {
   @override
   void didUpdateWidget(LMChatBubble oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.conversation != widget.conversation) {
-      setState(() {
-        conversation = widget.conversation;
-        isEdited = widget.conversation.isEdited ?? false;
-        isDeleted = widget.conversation.deletedByUserId != null;
-      });
-    }
+    setState(() {
+      conversation = widget.conversation;
+      isEdited = widget.conversation.isEdited ?? false;
+      isDeleted = widget.conversation.deletedByUserId != null;
+    });
   }
 
   @override
