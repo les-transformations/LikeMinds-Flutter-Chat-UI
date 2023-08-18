@@ -24,21 +24,14 @@ class LMProfilePicture extends StatelessWidget {
     return Container(
       height: size,
       width: size,
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
+        shape: BoxShape.circle,
         border: Border.all(
           color: Colors.white,
           width: border,
         ),
-        color: imageUrl != null && imageUrl!.isNotEmpty
-            ? kGrey3Color
-            : backgroundColor ?? Theme.of(context).primaryColor,
-        image: imageUrl != null && imageUrl!.isNotEmpty
-            ? DecorationImage(
-                image: NetworkImage(imageUrl!),
-                fit: BoxFit.cover,
-              )
-            : null,
+        color: backgroundColor ?? Theme.of(context).primaryColor,
       ),
       child: imageUrl == null || imageUrl!.isEmpty
           ? Center(
@@ -51,7 +44,20 @@ class LMProfilePicture extends StatelessWidget {
                 ),
               ),
             )
-          : null,
+          : Image.network(
+              imageUrl!,
+              fit: BoxFit.cover,
+              errorBuilder: (context, _, __) => Center(
+                child: Text(
+                  fallbackText.isNotEmpty ? fallbackText[0].toUpperCase() : "",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: size / 2,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }
