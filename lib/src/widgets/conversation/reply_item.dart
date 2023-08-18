@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
-import 'package:likeminds_chat_ui_fl/src/utils/helpers.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/utils.dart';
 import 'package:likeminds_chat_ui_fl/src/widgets/common/text/text_view.dart';
