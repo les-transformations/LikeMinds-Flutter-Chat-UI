@@ -210,7 +210,8 @@ class _HomePageState extends State<HomePage> {
               ? conversation.userId == user.id
                   ? 'You deleted this message'
                   : "This message was deleted"
-              : "This message was deleted by the CM";
+              : "This message was deleted by a community manager";
+
       chats.add(
         LMListItem(
           // chatroom: chatrooms[i],
