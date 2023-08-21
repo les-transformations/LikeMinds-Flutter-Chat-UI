@@ -40,6 +40,7 @@ class LMChatBubble extends StatefulWidget {
     this.showActions,
     this.replyItem,
     this.mediaWidget,
+    this.deletedText,
   });
 
   final Conversation conversation;
@@ -80,6 +81,8 @@ class LMChatBubble extends StatefulWidget {
 
   final bool? isSent;
   final bool? showActions;
+
+  final LMTextView? deletedText;
 
   @override
   State<LMChatBubble> createState() => _LMChatBubbleState();
@@ -282,26 +285,31 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                             //   ),
                             // ),
                             isDeleted
-                                ? conversation!.deletedByUserId ==
-                                        conversation!.userId
-                                    ? LMTextView(
-                                        text: currentUser!.id ==
-                                                conversation!.deletedByUserId
-                                            ? "You deleted this message"
-                                            : "This message was deleted",
-                                        textStyle:
-                                            widget.content!.textStyle!.copyWith(
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      )
-                                    : LMTextView(
-                                        text:
-                                            "This message was deleted by the Community Manager",
-                                        textStyle:
-                                            widget.content!.textStyle!.copyWith(
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      )
+                                ? widget.deletedText != null
+                                    ? widget.deletedText!
+                                    : conversation!.deletedByUserId ==
+                                            conversation!.userId
+                                        ? LMTextView(
+                                            text: currentUser!.id ==
+                                                    conversation!
+                                                        .deletedByUserId
+                                                ? "You deleted this message"
+                                                : "This message was deleted",
+                                            textStyle: widget
+                                                .content!.textStyle!
+                                                .copyWith(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          )
+                                        : LMTextView(
+                                            text:
+                                                "This message was deleted by a community managers",
+                                            textStyle: widget
+                                                .content!.textStyle!
+                                                .copyWith(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          )
                                 : replyingTo != null
                                     ? Align(
                                         alignment: Alignment.topLeft,
