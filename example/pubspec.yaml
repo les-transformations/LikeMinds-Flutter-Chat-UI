@@ -67,8 +67,6 @@ dependencies:
   likeminds_chat_ui_fl: 
     path: ../
 
-  likeminds_chat_fl:
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
