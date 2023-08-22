@@ -516,6 +516,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                       CustomPopupMenuController();
                                   return item.userId == user!.id
                                       ? LMChatBubble(
+                                          currentUser: user!,
                                           key: Key(item.id.toString()),
                                           isSent: item.userId == user!.id,
                                           backgroundColor: primary.shade500,
@@ -785,6 +786,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                   : const SizedBox.shrink(),
                                         )
                                       : LMChatBubble(
+                                          currentUser: user!,
                                           key: Key(item.id.toString()),
                                           isSent: item.userId == user!.id,
                                           backgroundColor: secondary.shade100,

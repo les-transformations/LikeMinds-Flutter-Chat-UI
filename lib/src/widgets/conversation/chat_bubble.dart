@@ -10,6 +10,7 @@ class LMChatBubble extends StatefulWidget {
     super.key,
     required this.conversation,
     required this.sender,
+    required this.currentUser,
     this.title,
     this.content,
     // this.meta,
@@ -39,11 +40,13 @@ class LMChatBubble extends StatefulWidget {
     this.showActions,
     this.replyItem,
     this.mediaWidget,
+    this.deletedText,
   });
 
   final Conversation conversation;
   final Conversation? replyingTo;
   final User sender;
+  final User currentUser;
 
   final LMTextView? title;
   final LMChatContent? content;
@@ -79,15 +82,18 @@ class LMChatBubble extends StatefulWidget {
   final bool? isSent;
   final bool? showActions;
 
+  final LMTextView? deletedText;
+
   @override
   State<LMChatBubble> createState() => _LMChatBubbleState();
 }
 
 class _LMChatBubbleState extends State<LMChatBubble> {
-  late Conversation conversation;
-  late Conversation? replyingTo;
-  late User sender;
-  late CustomPopupMenuController _menuController;
+  Conversation? conversation;
+  Conversation? replyingTo;
+  User? sender;
+  User? currentUser;
+  //late CustomPopupMenuController _menuController;
 
   bool isSent = false;
   bool isDeleted = false;
@@ -99,10 +105,11 @@ class _LMChatBubbleState extends State<LMChatBubble> {
     isSent = widget.isSent ?? false;
     conversation = widget.conversation;
     sender = widget.sender;
+    currentUser = widget.currentUser;
     replyingTo = widget.replyingTo;
     isEdited = widget.conversation.isEdited ?? false;
     isDeleted = widget.conversation.deletedByUserId != null;
-    _menuController = CustomPopupMenuController();
+    //_menuController = CustomPopupMenuController();
   }
 
   @override
@@ -110,6 +117,9 @@ class _LMChatBubbleState extends State<LMChatBubble> {
     super.didUpdateWidget(oldWidget);
     setState(() {
       conversation = widget.conversation;
+      sender = widget.sender;
+      replyingTo = widget.replyingTo;
+      currentUser = widget.currentUser;
       isEdited = widget.conversation.isEdited ?? false;
       isDeleted = widget.conversation.deletedByUserId != null;
     });
@@ -134,10 +144,10 @@ class _LMChatBubbleState extends State<LMChatBubble> {
     return Swipeable(
       dismissThresholds: const {SwipeDirection.startToEnd: 0.2},
       movementDuration: const Duration(milliseconds: 50),
-      key: ValueKey(conversation.id),
+      key: ValueKey(conversation!.id),
       onSwipe: (direction) {
         if (widget.onReply != null) {
-          widget.onReply!(conversation);
+          widget.onReply!(conversation!);
         }
       },
       background: Padding(
@@ -204,12 +214,12 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                           ? GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
-                                print("Menu object tapped");
+                                debugPrint("Menu object tapped");
                                 widget.menuController.hideMenu();
                               },
                               child: widget.menu,
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       child: Container(
                         constraints: BoxConstraints(
                           minHeight: 4.h,
@@ -275,24 +285,31 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                             //   ),
                             // ),
                             isDeleted
-                                ? conversation.deletedByUserId ==
-                                        conversation.userId
-                                    ? LMTextView(
-                                        text:
-                                            "This message was deleted by the user.",
-                                        textStyle:
-                                            widget.content!.textStyle!.copyWith(
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      )
-                                    : LMTextView(
-                                        text:
-                                            "This message was deleted by the Community Manager",
-                                        textStyle:
-                                            widget.content!.textStyle!.copyWith(
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      )
+                                ? widget.deletedText != null
+                                    ? widget.deletedText!
+                                    : conversation!.deletedByUserId ==
+                                            conversation!.userId
+                                        ? LMTextView(
+                                            text: currentUser!.id ==
+                                                    conversation!
+                                                        .deletedByUserId
+                                                ? "You deleted this message"
+                                                : "This message was deleted",
+                                            textStyle: widget
+                                                .content!.textStyle!
+                                                .copyWith(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          )
+                                        : LMTextView(
+                                            text:
+                                                "This message was deleted by a community managers",
+                                            textStyle: widget
+                                                .content!.textStyle!
+                                                .copyWith(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          )
                                 : replyingTo != null
                                     ? Align(
                                         alignment: Alignment.topLeft,
