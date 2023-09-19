@@ -18,8 +18,8 @@ export 'common/shimmer/document_shimmer.dart';
 export 'common/profile_picture.dart';
 
 // export 'media/document.dart';
-// export 'media/image.dart';
+export 'media/image.dart';
 // export 'media/video.dart';
-// export 'media/link.dart';
+export 'media/link.dart';
 
 export 'list/list_item.dart';

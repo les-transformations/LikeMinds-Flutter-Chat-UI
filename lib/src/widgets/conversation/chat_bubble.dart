@@ -284,6 +284,15 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                             //             Theme.of(context).primaryColor,
                             //   ),
                             // ),
+                            if ((widget.mediaWidget != null &&
+                                    widget.content != null) &&
+                                !isDeleted && !widget.conversation.hasFiles!)
+                              const SizedBox(height: 8),
+                            isDeleted
+                                ? const SizedBox.shrink()
+                                : widget.mediaWidget ?? const SizedBox(),
+                            if (widget.mediaWidget != null && !isDeleted)
+                              const SizedBox(height: 8),
                             isDeleted
                                 ? widget.deletedText != null
                                     ? widget.deletedText!
@@ -344,15 +353,15 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                           visibleLines: 2,
                                           animation: true,
                                         ),
-                            if ((widget.mediaWidget != null &&
-                                    widget.content != null) &&
-                                !isDeleted)
-                              const SizedBox(height: 8),
-                            isDeleted
-                                ? const SizedBox.shrink()
-                                : widget.mediaWidget ?? const SizedBox(),
-                            if (widget.mediaWidget != null && !isDeleted)
-                              const SizedBox(height: 8),
+                            // if ((widget.mediaWidget != null &&
+                            //         widget.content != null) &&
+                            //     !isDeleted)
+                            //   const SizedBox(height: 8),
+                            // isDeleted
+                            //     ? const SizedBox.shrink()
+                            //     : widget.mediaWidget ?? const SizedBox(),
+                            // if (widget.mediaWidget != null && !isDeleted)
+                            //   const SizedBox(height: 8),
                             if (widget.footer != null &&
                                 widget.footer!.isNotEmpty &&
                                 !isDeleted)
