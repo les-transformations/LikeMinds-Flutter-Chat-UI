@@ -17,6 +17,8 @@ export 'common/shimmer/document_shimmer.dart';
 
 export 'common/profile_picture.dart';
 
+export 'chatroom/chatroom.topic.dart';
+
 // export 'media/document.dart';
 export 'media/image.dart';
 // export 'media/video.dart';

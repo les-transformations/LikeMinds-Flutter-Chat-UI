@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 
 /// This widget is used to display link preview
 ///
@@ -97,7 +96,7 @@ class LMLinkPreview extends StatelessWidget {
                 width: width ?? MediaQuery.of(context).size.width,
                 child: Column(
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       width: width ?? MediaQuery.of(context).size.width,
                       child: title ??
                           LMTextView(
@@ -106,9 +105,11 @@ class LMLinkPreview extends StatelessWidget {
                                 : 'NOT PRODUCING',
                             textStyle: const TextStyle(
                               color: kGrey1Color,
-                              fontSize: kFontMedium,
+                              fontSize: kFontSmallMed,
                               fontWeight: FontWeight.bold,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                     ),
                     kVerticalPaddingSmall,
@@ -120,6 +121,7 @@ class LMLinkPreview extends StatelessWidget {
                                 ? linkModel!.ogTags!.description!
                                 : 'NOT PRODUCING',
                             maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             textStyle: const TextStyle(
                               color: kGrey3Color,
                               fontSize: kFontSmall,
