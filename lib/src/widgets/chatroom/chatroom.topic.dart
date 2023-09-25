@@ -153,9 +153,12 @@ class LMChatRoomTopic extends StatelessWidget {
               ),
             ),
             if (((conversation != null && conversation!.ogTags != null) ||
-                    (conversation!.attachments != null &&
-                        conversation!.attachments!.isNotEmpty)) &&
-                (conversation!.attachments!.first.type != kAttachmentTypePDF))
+                    ((conversation!.attachments != null &&
+                            conversation!.attachments!.isNotEmpty)) &&
+                        (conversation!.attachments!.first.type !=
+                            kAttachmentTypePDF)) &&
+                (conversation!.ogTags != null &&
+                    conversation!.ogTags?['image'] != null))
               Align(
                 alignment: Alignment.centerRight,
                 child: conversation != null
