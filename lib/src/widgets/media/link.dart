@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 
 /// This widget is used to display link preview
 ///
