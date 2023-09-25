@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  chewie:
+    dependency: transitive
+    description:
+      name: chewie
+      sha256: "745e81e84c6d7f3835f89f85bb49771c0a66099e4caf8f8e9e9a372bc66fb2c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   clock:
     dependency: transitive
     description:
@@ -704,19 +712,20 @@ packages:
     source: hosted
     version: "1.3.0"
   likeminds_chat_fl:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "../../LikeMinds-Flutter-GroupChat-SDK"
-      relative: true
-    source: path
-    version: "1.5.0"
+      name: likeminds_chat_fl
+      sha256: "17d32584cbcb9456a417001de87a4a82237edab57cec2bc442337414b9ceeccc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0"
   likeminds_chat_ui_fl:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "1.0.3"
+    version: "0.0.1"
   lints:
     dependency: transitive
     description:
