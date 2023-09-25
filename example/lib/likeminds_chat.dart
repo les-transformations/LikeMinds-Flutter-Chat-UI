@@ -28,7 +28,7 @@ class _LMChatAppState extends State<LMChatApp> {
     super.initState();
     _authBloc = BlocProvider.of<AuthBloc>(context);
     _authBloc.add(InitAuthEvent(
-      apiKey: EnvDev.apiKey,
+      apiKey: isDebug ? EnvDev.apiKey : EnvProd.apiKey,
       callback: ExampleCallback(),
     ));
   }
@@ -41,8 +41,8 @@ class _LMChatAppState extends State<LMChatApp> {
         listener: (context, state) {
           if (state is AuthInitiated) {
             _authBloc.add(LoginEvent(
-              userId: EnvDev.botId,
-              username: 'pp',
+              userId: isDebug ? EnvDev.botId : EnvProd.botId,
+              username: isDebug ? "test-debug-user" : "test-prod-user",
             ));
           }
         },

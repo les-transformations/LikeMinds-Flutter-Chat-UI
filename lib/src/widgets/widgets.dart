@@ -15,6 +15,8 @@ export 'common/text/text_input.dart';
 export 'common/shimmer/media_shimmer.dart';
 export 'common/shimmer/document_shimmer.dart';
 
+export 'common/sheets/group_detail_bottom_sheet.dart';
+
 export 'common/profile_picture.dart';
 
 // export 'media/document.dart';
