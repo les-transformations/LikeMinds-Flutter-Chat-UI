@@ -125,12 +125,27 @@ class LMChatRoomTopic extends StatelessWidget {
                                 : const SizedBox.shrink(),
                         kHorizontalPaddingXSmall,
                         conversation != null
-                            ? LMTextView(
-                                text: "● ${conversation!.date}",
-                                textStyle: const TextStyle(
-                                  color: kGrey2Color,
-                                  // fontSize: 16
-                                ),
+                            ? Text.rich(
+                                TextSpan(children: [
+                                  const WidgetSpan(
+                                      child: Center(
+                                    child: LMTextView(
+                                      text: "\u2022 ",
+                                      textStyle: TextStyle(
+                                        color: kGrey2Color,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  )),
+                                  WidgetSpan(
+                                      child: LMTextView(
+                                    text: "${conversation!.date}",
+                                    textStyle: const TextStyle(
+                                      color: kGrey2Color,
+                                      // fontSize: 16
+                                    ),
+                                  ))
+                                ]),
                               )
                             : date ?? const SizedBox.shrink(),
                       ],
