@@ -1113,28 +1113,43 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                   ),
                                   SizedBox(width: 4.w),
                                   Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          chatroom!.header,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 16,
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        chatroom != null
+                                            ? showBottomSheet(
+                                                context: context,
+                                                builder: (context) {
+                                                  return LMGroupDetailBottomSheet(
+                                                    chatRoom: chatroom!,
+                                                  );
+                                                },
+                                              )
+                                            : {};
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            chatroom!.header,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
                                           ),
-                                        ),
-                                        kVerticalPaddingSmall,
-                                        Text(
-                                          '${chatroom!.participantCount} participants',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 14,
+                                          kVerticalPaddingSmall,
+                                          Text(
+                                            '${chatroom!.participantCount} participants',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   ChatroomMenu(
