@@ -19,7 +19,7 @@ export 'common/sheets/group_detail_bottom_sheet.dart';
 
 export 'common/profile_picture.dart';
 
-export 'chatroom/chatroom.topic.dart';
+export 'chatroom/chatroom_topic.dart';
 
 // export 'media/document.dart';
 export 'media/image.dart';
