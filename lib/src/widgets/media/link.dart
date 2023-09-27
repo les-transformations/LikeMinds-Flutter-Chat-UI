@@ -63,7 +63,7 @@ class LMLinkPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+        return GestureDetector(
       onTap: onTap,
       child: Container(
         clipBehavior: Clip.hardEdge,
@@ -76,20 +76,26 @@ class LMLinkPreview extends StatelessWidget {
               ),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        height: height,
+        height: checkNullMedia() ? null : height,
         width: width ?? MediaQuery.of(context).size.width,
         child: Column(
           children: <Widget>[
             checkNullMedia()
                 ? const SizedBox.shrink()
                 : LMImage(
+                    errorWidget:  LMIcon(
+                              type: LMIconType.icon,
+                              icon: Icons.error_outline,
+                              size: 24,
+                              color: kGrey3Color,
+                            ),
                     width: width,
-                    height: 150,
+                    height: height != null ? height! - 60 : 100,
                     borderRadius: borderRadius,
                     imageUrl: imageUrl ?? linkModel!.ogTags?.image,
                   ),
             Container(
-              height: height != null ? (height! - 152) : null,
+              // height: height != null ? 60 : null,
               color: backgroundColor,
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
