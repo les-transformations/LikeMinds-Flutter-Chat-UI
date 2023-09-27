@@ -288,7 +288,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                 ? const SizedBox.shrink()
                                 : ((widget.mediaWidget != null &&
                                             widget.content != null) ||
-                                        !widget.conversation.hasFiles!)
+                                        widget.conversation.hasFiles!)
                                     ? Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8),

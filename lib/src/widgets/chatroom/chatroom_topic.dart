@@ -126,7 +126,7 @@ class LMChatRoomTopic extends StatelessWidget {
                         kHorizontalPaddingXSmall,
                         conversation != null
                             ? LMTextView(
-                                text: "● ${conversation!.date}",
+                                text: "• ${conversation!.date}",
                                 textStyle: const TextStyle(
                                   color: kGrey2Color,
                                   // fontSize: 16
