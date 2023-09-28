@@ -76,31 +76,21 @@ class LMGroupDetailBottomSheet extends StatelessWidget {
                 const LMTextView(
                   text: "Group Info",
                   textStyle: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Stack(
                   children: [
-                    chatRoom.chatroomImageUrl != null &&
-                            chatRoom.chatroomImageUrl!.isNotEmpty
-                        ? CachedNetworkImage(
-                            width: 100.w,
-                            height: 36.h,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) {
-                              return const LMMediaShimmer();
-                            },
-                            imageUrl: chatRoom.chatroomImageUrl ??
-                                "https://placehold.co/600x400/000000/FFF?text=Chatroom",
-                          )
-                        : Container(
-                            height: 36.h,
-                            color: Colors.white,
-                          ),
+                    LMProfilePicture(
+                      fallbackText: chatRoom.header,
+                      imageUrl: chatRoom.chatroomImageUrl,
+                      borderRadius: 0,
+                      size: 48.h,
+                    ),
                     Container(
-                      height: 36.h,
+                      height: 48.h,
                       decoration: BoxDecoration(
                         gradient: overlayGradient ??
                             const LinearGradient(
@@ -143,19 +133,20 @@ class LMGroupDetailBottomSheet extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const LMTextView(
-                          text: "Description",
-                          textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        descriptionHeading ??
+                            const LMTextView(
+                              text: "Description",
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                         const SizedBox(height: 8),
                         description ??
                             LMTextView(
                               text: chatRoom.title,
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                               ),

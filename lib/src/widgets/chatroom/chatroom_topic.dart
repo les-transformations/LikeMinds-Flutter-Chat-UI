@@ -7,18 +7,19 @@ import 'package:likeminds_chat_ui_fl/src/utils/constants.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
 
 class LMChatRoomTopic extends StatelessWidget {
-  const LMChatRoomTopic(
-      {super.key,
-      this.conversation,
-      required this.onTap,
-      this.leading,
-      this.trailing,
-      this.title,
-      this.subTitle,
-      this.date,
-      this.backGroundColor});
+  const LMChatRoomTopic({
+    super.key,
+    required this.conversation,
+    required this.onTap,
+    this.leading,
+    this.trailing,
+    this.title,
+    this.subTitle,
+    this.date,
+    this.backGroundColor,
+  });
 
-  final Conversation? conversation;
+  final Conversation conversation;
   final VoidCallback onTap;
   final Widget? leading;
   final Widget? trailing;
@@ -95,13 +96,13 @@ class LMChatRoomTopic extends StatelessWidget {
           child: Row(children: [
             leading != null
                 ? leading!
-                : conversation != null
-                    ? LMProfilePicture(
-                        fallbackText: conversation!.member!.name,
-                        imageUrl: conversation!.member?.imageUrl,
-                        size: 36,
-                      )
-                    : const SizedBox.shrink(),
+                : LMProfilePicture(
+                    fallbackText: conversation.member != null
+                        ? conversation.member!.name
+                        : "Chatroom topic",
+                    imageUrl: conversation.member?.imageUrl,
+                    size: 36,
+                  ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -113,30 +114,46 @@ class LMChatRoomTopic extends StatelessWidget {
                       children: [
                         title != null
                             ? title!
-                            : conversation != null
-                                ? LMTextView(
-                                    text: conversation!.member!.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    textStyle: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
-                        kHorizontalPaddingXSmall,
-                        conversation != null
-                            ? LMTextView(
-                                text: "● ${conversation!.date}",
+                            : LMTextView(
+                                text: conversation.member != null
+                                    ? conversation.member!.name
+                                    : "Chatroom topic",
+                                overflow: TextOverflow.ellipsis,
                                 textStyle: const TextStyle(
-                                  color: kGrey2Color,
-                                  // fontSize: 16
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
                                 ),
+                              ),
+                        kHorizontalPaddingXSmall,
+                        date == null
+                            ? Text.rich(
+                                TextSpan(children: [
+                                  const WidgetSpan(
+                                      child: Center(
+                                    child: LMTextView(
+                                      text: "\u2022 ",
+                                      textStyle: TextStyle(
+                                        color: kGrey2Color,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  )),
+                                  WidgetSpan(
+                                      child: LMTextView(
+                                    text: "${conversation.date}",
+                                    textStyle: const TextStyle(
+                                      color: kGrey2Color,
+                                      // fontSize: 16
+                                    ),
+                                  ))
+                                ]),
                               )
-                            : date ?? const SizedBox.shrink(),
+                            : date!,
                       ],
                     ),
-                    conversation != null
-                        ? Text.rich(
+                    subTitle != null
+                        ? subTitle!
+                        : Text.rich(
                             TextSpan(
                               style: const TextStyle(
                                 fontSize: 13,
@@ -146,37 +163,37 @@ class LMChatRoomTopic extends StatelessWidget {
                                 //   child: generateIcon(conversation!),
                                 // ),
                                 TextSpan(
-                                  text: generateSubtext(conversation!),
+                                  text: generateSubtext(conversation),
                                 )
                               ],
                             ),
                             maxLines: 1,
                             style: const TextStyle(
-                                overflow: TextOverflow.ellipsis),
-                          )
-                        : subTitle!,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                   ],
                 ),
               ),
             ),
             trailing != null
                 ? trailing!
-                : (((conversation != null && conversation!.ogTags != null) ||
-                            ((conversation!.attachments != null &&
-                                    conversation!.attachments!.isNotEmpty)) &&
-                                (conversation!.attachments!.first.type !=
+                : (((conversation.ogTags != null) ||
+                            ((conversation.attachments != null &&
+                                    conversation.attachments!.isNotEmpty)) &&
+                                (conversation.attachments!.first.type !=
                                     kAttachmentTypePDF)) &&
-                        (conversation!.ogTags != null &&
-                            conversation!.ogTags?['image'] != null))
+                        (conversation.ogTags != null &&
+                            conversation.ogTags?['image'] != null))
                     ? Align(
                         alignment: Alignment.centerRight,
                         child: LMImage(
                           imageFile:
-                              conversation!.attachments?.first.attachmentFile,
+                              conversation.attachments?.first.attachmentFile,
                           imageUrl:
-                              conversation!.attachments?.first.thumbnailUrl ??
-                                  conversation!.attachments?.first.url ??
-                                  conversation!.ogTags?['image'],
+                              conversation.attachments?.first.thumbnailUrl ??
+                                  conversation.attachments?.first.url ??
+                                  conversation.ogTags?['image'],
                           width: 65,
                           height: 65,
                         ),
