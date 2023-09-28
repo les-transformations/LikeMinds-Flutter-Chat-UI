@@ -119,7 +119,7 @@ class LMLinkPreview extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                     ),
-                    kVerticalPaddingSmall,
+                    kVerticalPaddingXSmall,
                     SizedBox(
                       width: width ?? MediaQuery.of(context).size.width,
                       child: subtitle ??

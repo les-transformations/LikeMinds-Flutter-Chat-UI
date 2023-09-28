@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  likeminds_chat_fl:
-    path: ../LikeMinds-Flutter-GroupChat-SDK
+  likeminds_chat_fl: 1.5.1
+  
   flutter_typeahead_mm:
     path: lib/packages/flutter_typeahead-4.3.7
 
