@@ -228,7 +228,9 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                             minWidth: 10.w,
                             maxWidth: 60.w,
                           ),
-                          padding: const EdgeInsets.all(12.0),
+                          padding: EdgeInsets.all(
+                            widget.mediaWidget != null ? 8.0 : 12.0,
+                          ),
                           decoration: BoxDecoration(
                             color: widget.backgroundColor ?? Colors.white,
                             borderRadius: widget.borderRadius ??
@@ -293,7 +295,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                           widget.conversation.hasFiles!)
                                       ? Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 4),
+                                              vertical: 0, horizontal: 0),
                                           child: widget.mediaWidget,
                                         )
                                       : const SizedBox(),
@@ -368,7 +370,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
                                                 ),
-                                                visibleLines: 2,
+                                                visibleLines: 4,
                                                 animation: true,
                                               ),
                                         ),
@@ -413,7 +415,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                   right: widget.avatar != null ? 48.0 : 24.0,
                   left: widget.avatar != null ? 48.0 : 28.0,
                 ),
-                child: widget.outsideFooter ?? const SizedBox(),
+                child: widget.outsideFooter ?? const SizedBox.shrink(),
               ),
             ],
           ),

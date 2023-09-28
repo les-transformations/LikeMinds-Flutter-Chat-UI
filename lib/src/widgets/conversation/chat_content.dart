@@ -40,6 +40,6 @@ class LMChatContent extends StatelessWidget {
             style: textStyle ?? Theme.of(context).textTheme.bodyMedium,
             linkEllipsis: true,
           )
-        : const SizedBox.shrink();
+        : const SizedBox();
   }
 }
