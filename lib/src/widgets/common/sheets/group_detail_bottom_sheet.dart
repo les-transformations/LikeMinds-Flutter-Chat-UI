@@ -76,7 +76,7 @@ class LMGroupDetailBottomSheet extends StatelessWidget {
                 const LMTextView(
                   text: "Group Info",
                   textStyle: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -133,19 +133,20 @@ class LMGroupDetailBottomSheet extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const LMTextView(
-                          text: "Description",
-                          textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        descriptionHeading ??
+                            const LMTextView(
+                              text: "Description",
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                         const SizedBox(height: 8),
                         description ??
                             LMTextView(
                               text: chatRoom.title,
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                               ),

@@ -266,16 +266,16 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                                 ),
                                               ),
                                             )
-                                      : const SizedBox()
+                                      : const SizedBox.shrink()
                                   : isDeleted
                                       ? const SizedBox.shrink()
                                       : widget.replyItem!,
                               replyingTo != null
                                   ? const SizedBox(height: 8)
-                                  : const SizedBox(),
+                                  : const SizedBox.shrink(),
                               isSent
                                   ? const SizedBox()
-                                  : widget.title ?? const SizedBox(),
+                                  : widget.title ?? const SizedBox.shrink(),
                               // LMTextView(
                               //   text: widget.sender.name,
                               //   textStyle: TextStyle(
@@ -293,7 +293,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                           widget.conversation.hasFiles!)
                                       ? Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 8),
+                                              vertical: 4),
                                           child: widget.mediaWidget,
                                         )
                                       : const SizedBox(),
@@ -326,6 +326,34 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                   : replyingTo != null
                                       ? Align(
                                           alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              top: widget.mediaWidget != null
+                                                  ? 4.0
+                                                  : 0,
+                                            ),
+                                            child: widget.content ??
+                                                LMChatContent(
+                                                  conversation:
+                                                      widget.conversation,
+                                                  linkStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.only(
+                                              top: widget.mediaWidget != null
+                                                  ? 4.0
+                                                  : 0),
                                           child: widget.content ??
                                               LMChatContent(
                                                 conversation:
@@ -340,24 +368,10 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
                                                 ),
+                                                visibleLines: 2,
+                                                animation: true,
                                               ),
-                                        )
-                                      : widget.content ??
-                                          LMChatContent(
-                                            conversation: widget.conversation,
-                                            linkStyle: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            textStyle: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            visibleLines: 2,
-                                            animation: true,
-                                          ),
+                                        ),
                               if (widget.footer != null &&
                                   widget.footer!.isNotEmpty &&
                                   !isDeleted)

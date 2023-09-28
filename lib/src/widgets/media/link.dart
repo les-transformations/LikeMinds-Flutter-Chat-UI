@@ -63,17 +63,18 @@ class LMLinkPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return GestureDetector(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: kWhiteColor,
-          border: border ??
-              Border.all(
-                color: kGrey3Color,
-                width: 0.5,
-              ),
+          border: border,
+          // ??
+          //     Border.all(
+          //       color: kGrey3Color,
+          //       width: 0.0,
+          //     ),
           borderRadius: BorderRadius.circular(8.0),
         ),
         height: checkNullMedia() ? null : height,
@@ -83,12 +84,12 @@ class LMLinkPreview extends StatelessWidget {
             checkNullMedia()
                 ? const SizedBox.shrink()
                 : LMImage(
-                    errorWidget:  LMIcon(
-                              type: LMIconType.icon,
-                              icon: Icons.error_outline,
-                              size: 24,
-                              color: kGrey3Color,
-                            ),
+                    errorWidget: LMIcon(
+                      type: LMIconType.icon,
+                      icon: Icons.error_outline,
+                      size: 24,
+                      color: kGrey3Color,
+                    ),
                     width: width,
                     height: height != null ? height! - 60 : 100,
                     borderRadius: borderRadius,
@@ -112,7 +113,7 @@ class LMLinkPreview extends StatelessWidget {
                             textStyle: const TextStyle(
                               color: kGrey1Color,
                               fontSize: kFontSmallMed,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -126,11 +127,12 @@ class LMLinkPreview extends StatelessWidget {
                             text: linkModel != null
                                 ? linkModel!.ogTags!.description!
                                 : 'NOT PRODUCING',
-                            maxLines: 2,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textStyle: const TextStyle(
                               color: kGrey3Color,
                               fontSize: kFontSmall,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                     ),
