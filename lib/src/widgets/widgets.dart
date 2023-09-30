@@ -15,11 +15,15 @@ export 'common/text/text_input.dart';
 export 'common/shimmer/media_shimmer.dart';
 export 'common/shimmer/document_shimmer.dart';
 
+export 'common/sheets/group_detail_bottom_sheet.dart';
+
 export 'common/profile_picture.dart';
 
+export 'chatroom/chatroom_topic.dart';
+
 // export 'media/document.dart';
-// export 'media/image.dart';
+export 'media/image.dart';
 // export 'media/video.dart';
-// export 'media/link.dart';
+export 'media/link.dart';
 
 export 'list/list_item.dart';

@@ -26,7 +26,9 @@ class LMProfilePicture extends StatelessWidget {
       width: size,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        borderRadius: BorderRadius.all(
+          Radius.circular(borderRadius),
+        ),
         border: Border.all(
           color: Colors.white,
           width: border,
