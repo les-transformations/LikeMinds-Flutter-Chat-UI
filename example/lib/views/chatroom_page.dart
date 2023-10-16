@@ -471,10 +471,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          // width: item.isTimeStamp == null ||
-                                          //         !item.isTimeStamp!
-                                          //     ? 70.w
-                                          //     : 35.w,
+                                          width: item.isTimeStamp == null ||
+                                                  !item.isTimeStamp!
+                                              ? 70.w
+                                              : 35.w,
                                           margin: const EdgeInsets.symmetric(
                                               vertical: 5),
                                           padding: const EdgeInsets.symmetric(
@@ -494,6 +494,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                   .extractStateMessage(
                                                       item.answer),
                                               textAlign: TextAlign.center,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               textStyle: const TextStyle(
                                                 fontSize: 10,
                                               )),
