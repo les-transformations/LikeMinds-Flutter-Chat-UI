@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:likeminds_chat_ui_fl/src/models/menu_item.dart';
+import 'package:likeminds_chat_ui_fl/src/models/menu_item_model.dart';
 import 'package:swipe_to_action/swipe_to_action.dart';
 
 class LMChatBubble extends StatefulWidget {
@@ -65,7 +65,7 @@ class LMChatBubble extends StatefulWidget {
 
   final CustomPopupMenuController? menuController;
   final Widget? menu;
-  final List<LMMenuItem>? menuItems;
+  final List<LMMenuItemUI>? menuItems;
   final Function(Conversation replyingTo)? onReply;
   final Function(Conversation editConversation)? onEdit;
   final Function(Conversation conversation)? onLongPress;
@@ -237,7 +237,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              for (LMMenuItem menuItem
+                                              for (LMMenuItemUI menuItem
                                                   in widget.menuItems!)
                                                 ListTile(
                                                   onTap: () {

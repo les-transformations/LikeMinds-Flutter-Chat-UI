@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LMMenuItem {
-  const LMMenuItem({
+class LMMenuItemUI {
+  const LMMenuItemUI({
     required this.leading,
     required this.title,
     required this.onTap,

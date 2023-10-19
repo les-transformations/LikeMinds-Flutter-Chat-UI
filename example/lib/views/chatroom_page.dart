@@ -520,7 +520,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           backgroundColor: primary.shade500,
                                          
                                           menuItems: [
-                                            LMMenuItem(
+                                            LMMenuItemUI(
                                               onTap: () {
                                                 int userId = item.userId ??
                                                     item.memberId!;
@@ -552,7 +552,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                 ),
                                               ),
                                             ),
-                                            LMMenuItem(
+                                            LMMenuItemUI(
                                               leading: const LMIcon(
                                                 type: LMIconType.svg,
                                                 assetPath: ssCopyIcon,
@@ -579,7 +579,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                               },
                                             ),
                                             if (checkEditPermissions(item))
-                                              LMMenuItem(
+                                              LMMenuItemUI(
                                                 onTap: () async {
                                                   _convActionBloc.add(
                                                     EditingConversation(
@@ -603,7 +603,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                 ),
                                               ),
                                             if (checkDeletePermissions(item))
-                                              LMMenuItem(
+                                              LMMenuItemUI(
                                                 onTap: () async {
                                                   final response = await locator<
                                                           LikeMindsService>()
@@ -738,7 +738,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           isSent: item.userId == user!.id,
                                           backgroundColor: secondary.shade100,
                                             menuItems: [
-                                            LMMenuItem(
+                                            LMMenuItemUI(
                                               onTap: () {
                                                 int userId = item.userId ??
                                                     item.memberId!;
@@ -770,7 +770,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                 ),
                                               ),
                                             ),
-                                            LMMenuItem(
+                                            LMMenuItemUI(
                                               leading: const LMIcon(
                                                 type: LMIconType.svg,
                                                 assetPath: ssCopyIcon,
@@ -797,7 +797,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                               },
                                             ),
                                             if (checkEditPermissions(item))
-                                              LMMenuItem(
+                                              LMMenuItemUI(
                                                 onTap: () async {
                                                   _convActionBloc.add(
                                                     EditingConversation(
@@ -821,7 +821,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                 ),
                                               ),
                                             if (checkDeletePermissions(item))
-                                              LMMenuItem(
+                                              LMMenuItemUI(
                                                 onTap: () async {
                                                   final response = await locator<
                                                           LikeMindsService>()
