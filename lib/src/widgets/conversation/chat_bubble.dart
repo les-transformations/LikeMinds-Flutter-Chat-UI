@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:likeminds_chat_ui_fl/src/widgets/conversation/menu_item.dart';
+import 'package:likeminds_chat_ui_fl/src/models/menu_item.dart';
 import 'package:swipe_to_action/swipe_to_action.dart';
 
 class LMChatBubble extends StatefulWidget {
@@ -209,7 +209,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                     AbsorbPointer(
                       absorbing: isDeleted,
                       child: CustomPopupMenu(
-                        controller: _menuController,
+                        controller: widget.menuController ?? _menuController,
                         pressType: PressType.longPress,
                         showArrow: false,
                         verticalMargin: 2.h,
