@@ -258,6 +258,8 @@ class ExpandableTextState extends State<ExpandableText>
             final nCount = '\n'.allMatches(resultText).length + 1;
             if (resultText.length > 500 || nCount > 4) {
               resultText = resultText.substring(0, max(endOffset, 0));
+            } else {
+              resultText = resultText.substring(0, max(endOffset, 0));
             }
 
             resultText = TaggingHelper.encodeString(resultText, userTags);
