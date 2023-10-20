@@ -84,7 +84,7 @@ class LMLinkPreview extends StatelessWidget {
             checkNullMedia()
                 ? const SizedBox.shrink()
                 : LMImage(
-                    errorWidget: LMIcon(
+                    errorWidget: const LMIcon(
                       type: LMIconType.icon,
                       icon: Icons.error_outline,
                       size: 24,

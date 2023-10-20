@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:likeminds_chat_ui_fl/src/widgets/common/profile_picture.dart';
-import 'package:likeminds_chat_ui_fl/src/widgets/common/text/text_view.dart';
 
 class LMListItem extends StatelessWidget {
   const LMListItem({
@@ -82,7 +80,8 @@ class LMListItem extends StatelessWidget {
                                       LMTextView(
                                         text: chatroom?.header ??
                                             "Dummy Title Text",
-                                        textStyle: TextStyle(fontSize: 12),
+                                        textStyle:
+                                            const TextStyle(fontSize: 12),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
