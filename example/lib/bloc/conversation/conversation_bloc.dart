@@ -30,11 +30,11 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
             .getConversation(event.getConversationRequest);
         if (response.success) {
           GetConversationResponse conversationResponse = response.data;
-          conversationResponse.conversationData!.forEach((element) {
+          for (var element in conversationResponse.conversationData!) {
             element.member = conversationResponse
                 .userMeta?[element.userId ?? element.memberId];
-          });
-          conversationResponse.conversationData!.forEach((element) {
+          }
+          for (var element in conversationResponse.conversationData!) {
             String? replyId = element.replyId == null
                 ? element.replyConversation?.toString()
                 : element.replyId.toString();
@@ -44,7 +44,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
                 conversationResponse.userMeta?[
                     element.replyConversationObject?.userId ??
                         element.replyConversationObject?.memberId];
-          });
+          }
           emit(
             ConversationLoaded(conversationResponse),
           );
