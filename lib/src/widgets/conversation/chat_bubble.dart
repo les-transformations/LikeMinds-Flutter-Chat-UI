@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
+import 'package:likeminds_chat_ui_fl/src/models/menu_item_model.dart';
 import 'package:swipe_to_action/swipe_to_action.dart';
 
 class LMChatBubble extends StatefulWidget {
@@ -13,7 +14,6 @@ class LMChatBubble extends StatefulWidget {
     required this.currentUser,
     this.title,
     this.content,
-    // this.meta,
     this.footer,
     this.avatar,
     this.replyingTo,
@@ -21,10 +21,9 @@ class LMChatBubble extends StatefulWidget {
     this.reactionButton,
     this.outsideTitle,
     this.outsideFooter,
-    // this.replyItem,
-    // this.reactionBar,
-    required this.menu,
-    required this.menuController,
+    this.menu,
+    this.menuController,
+    this.menuItems,
     this.onReply,
     this.onEdit,
     this.onLongPress,
@@ -50,7 +49,6 @@ class LMChatBubble extends StatefulWidget {
 
   final LMTextView? title;
   final LMChatContent? content;
-  // final LMChatMeta? meta;
   final List<LMTextView>? footer;
   final LMProfilePicture? avatar;
   final LMIcon? replyIcon;
@@ -59,11 +57,10 @@ class LMChatBubble extends StatefulWidget {
   final LMTextView? outsideTitle;
   final Widget? outsideFooter;
   final Widget? mediaWidget;
-  // final LMReactionBar? reactionBar;
 
-  final CustomPopupMenuController menuController;
-  final Widget menu;
-
+  final CustomPopupMenuController? menuController;
+  final Widget? menu;
+  final List<LMMenuItemUI>? menuItems;
   final Function(Conversation replyingTo)? onReply;
   final Function(Conversation editConversation)? onEdit;
   final Function(Conversation conversation)? onLongPress;
@@ -93,7 +90,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
   Conversation? replyingTo;
   User? sender;
   User? currentUser;
-  //late CustomPopupMenuController _menuController;
+  late CustomPopupMenuController _menuController;
 
   bool isSent = false;
   bool isDeleted = false;
@@ -109,7 +106,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
     replyingTo = widget.replyingTo;
     isEdited = widget.conversation.isEdited ?? false;
     isDeleted = widget.conversation.deletedByUserId != null;
-    //_menuController = CustomPopupMenuController();
+    _menuController = CustomPopupMenuController();
   }
 
   @override
@@ -127,20 +124,6 @@ class _LMChatBubbleState extends State<LMChatBubble> {
 
   @override
   Widget build(BuildContext context) {
-    // return GestureDetector(
-    //   behavior: HitTestBehavior.opaque,
-    //   onLongPress: () {
-    //     debugPrint("Long Pressed");
-    //     if (isDeleted) return;
-    //     // widget.menuController.showMenu();
-    //     // widget.onLongPress !=null ? widget.onLongPress!(conversation) : {};
-    //   },
-    //   onTap: () {
-    //     debugPrint("Tapped");
-    //     if (isDeleted) return;
-    //     // _controller.hideMenu();
-    //   },
-    //   child:
     return Swipeable(
       dismissThresholds: const {SwipeDirection.startToEnd: 0.2},
       movementDuration: const Duration(milliseconds: 50),
@@ -207,7 +190,7 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                     AbsorbPointer(
                       absorbing: isDeleted,
                       child: CustomPopupMenu(
-                        controller: widget.menuController,
+                        controller: widget.menuController ?? _menuController,
                         pressType: PressType.longPress,
                         showArrow: false,
                         verticalMargin: 2.h,
@@ -217,9 +200,41 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
                                   debugPrint("Menu object tapped");
-                                  widget.menuController.hideMenu();
                                 },
-                                child: widget.menu,
+                                child: widget.menu ??
+                                    ClipRRect(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 42.w,
+                                          maxWidth: 60.w,
+                                        ),
+                                        child: IntrinsicWidth(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              for (LMMenuItemUI menuItem
+                                                  in widget.menuItems!)
+                                                ListTile(
+                                                  onTap: () {
+                                                    menuItem.onTap();
+                                                    _menuController.hideMenu();
+                                                  },
+                                                  leading: menuItem.leading,
+                                                  title: menuItem.title,
+                                                  splashColor: Colors.grey
+                                                      .withOpacity(0.5),
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                               )
                             : const SizedBox(),
                         child: Container(
@@ -278,16 +293,6 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                               isSent
                                   ? const SizedBox()
                                   : widget.title ?? const SizedBox.shrink(),
-                              // LMTextView(
-                              //   text: widget.sender.name,
-                              //   textStyle: TextStyle(
-                              //     fontSize: 12,
-                              //     color: isSent
-                              //         ? Colors.black.withOpacity(0.6)
-                              //         : widget.sentColor ??
-                              //             Theme.of(context).primaryColor,
-                              //   ),
-                              // ),
                               isDeleted
                                   ? const SizedBox.shrink()
                                   : ((widget.mediaWidget != null &&

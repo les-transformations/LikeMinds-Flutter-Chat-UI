@@ -224,7 +224,7 @@ class ExpandableTextState extends State<ExpandableText>
           textAlign: textAlign,
           textDirection: textDirection,
           textScaleFactor: textScaleFactor,
-          maxLines: 5,
+          maxLines: 3,
           locale: locale,
         );
         textPainter.layout(minWidth: constraints.minWidth, maxWidth: maxWidth);
@@ -257,6 +257,8 @@ class ExpandableTextState extends State<ExpandableText>
             // final lineCount = textPainter.computeLineMetrics().length;
             final nCount = '\n'.allMatches(resultText).length + 1;
             if (resultText.length > 500 || nCount > 4) {
+              resultText = resultText.substring(0, max(endOffset, 0));
+            } else {
               resultText = resultText.substring(0, max(endOffset, 0));
             }
 
