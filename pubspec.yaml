@@ -1,6 +1,6 @@
 name: likeminds_chat_ui_fl
 description: A new Flutter package project.
-version: 1.1.0
+version: 1.1.1
 publish_to: none
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  likeminds_chat_fl: 1.5.1
+  likeminds_chat_fl: 1.5.2
   
   flutter_typeahead_mm:
     path: lib/packages/flutter_typeahead-4.3.7
