@@ -14,7 +14,6 @@ class LMChatBubble extends StatefulWidget {
     required this.currentUser,
     this.title,
     this.content,
-    // this.meta,
     this.footer,
     this.avatar,
     this.replyingTo,
@@ -22,8 +21,6 @@ class LMChatBubble extends StatefulWidget {
     this.reactionButton,
     this.outsideTitle,
     this.outsideFooter,
-    // this.replyItem,
-    // this.reactionBar,
     this.menu,
     this.menuController,
     this.menuItems,
@@ -52,7 +49,6 @@ class LMChatBubble extends StatefulWidget {
 
   final LMTextView? title;
   final LMChatContent? content;
-  // final LMChatMeta? meta;
   final List<LMTextView>? footer;
   final LMProfilePicture? avatar;
   final LMIcon? replyIcon;
@@ -61,7 +57,6 @@ class LMChatBubble extends StatefulWidget {
   final LMTextView? outsideTitle;
   final Widget? outsideFooter;
   final Widget? mediaWidget;
-  // final LMReactionBar? reactionBar;
 
   final CustomPopupMenuController? menuController;
   final Widget? menu;
@@ -129,20 +124,6 @@ class _LMChatBubbleState extends State<LMChatBubble> {
 
   @override
   Widget build(BuildContext context) {
-    // return GestureDetector(
-    //   behavior: HitTestBehavior.opaque,
-    //   onLongPress: () {
-    //     debugPrint("Long Pressed");
-    //     if (isDeleted) return;
-    //     // widget.menuController.showMenu();
-    //     // widget.onLongPress !=null ? widget.onLongPress!(conversation) : {};
-    //   },
-    //   onTap: () {
-    //     debugPrint("Tapped");
-    //     if (isDeleted) return;
-    //     // _controller.hideMenu();
-    //   },
-    //   child:
     return Swipeable(
       dismissThresholds: const {SwipeDirection.startToEnd: 0.2},
       movementDuration: const Duration(milliseconds: 50),
@@ -312,16 +293,6 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                               isSent
                                   ? const SizedBox()
                                   : widget.title ?? const SizedBox.shrink(),
-                              // LMTextView(
-                              //   text: widget.sender.name,
-                              //   textStyle: TextStyle(
-                              //     fontSize: 12,
-                              //     color: isSent
-                              //         ? Colors.black.withOpacity(0.6)
-                              //         : widget.sentColor ??
-                              //             Theme.of(context).primaryColor,
-                              //   ),
-                              // ),
                               isDeleted
                                   ? const SizedBox.shrink()
                                   : ((widget.mediaWidget != null &&

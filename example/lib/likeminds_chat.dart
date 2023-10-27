@@ -72,7 +72,7 @@ class _LMChatAppState extends State<LMChatApp> {
                     ),
                     useMaterial3: true,
                     fontFamily: 'Montserrat',
-                    textTheme: TextTheme(
+                    textTheme: const TextTheme(
                       displayLarge: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
