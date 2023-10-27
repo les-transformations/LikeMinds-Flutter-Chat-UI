@@ -492,8 +492,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                   .extractStateMessage(
                                                       item.answer),
                                               textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               textStyle: const TextStyle(
                                                 fontSize: 10,
                                               )),
