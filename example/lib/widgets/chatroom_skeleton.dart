@@ -107,7 +107,7 @@ class SkeletonChatPage extends StatelessWidget {
                     child: Container(
                       width: 42,
                       height: 42,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: kGreyColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(15),
@@ -173,7 +173,7 @@ class SkeletonChatBubble extends StatelessWidget {
                   child: Container(
                     width: 24,
                     height: 24,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: kGreyColor,
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
@@ -209,7 +209,7 @@ class SkeletonChatBubble extends StatelessWidget {
                   child: Container(
                     width: 24,
                     height: 24,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: kGreyColor,
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
