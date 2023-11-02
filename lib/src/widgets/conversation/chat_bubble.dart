@@ -1,3 +1,4 @@
+import 'package:contextmenu/contextmenu.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
@@ -189,54 +190,29 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                     const SizedBox(width: 4),
                     AbsorbPointer(
                       absorbing: isDeleted,
-                      child: CustomPopupMenu(
-                        controller: widget.menuController ?? _menuController,
-                        pressType: PressType.longPress,
-                        showArrow: false,
-                        verticalMargin: 2.h,
-                        horizontalMargin: isSent ? 2.w : 18.w,
-                        menuBuilder: () => !isDeleted
-                            ? GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  debugPrint("Menu object tapped");
-                                },
-                                child: widget.menu ??
-                                    ClipRRect(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        constraints: BoxConstraints(
-                                          minWidth: 42.w,
-                                          maxWidth: 60.w,
-                                        ),
-                                        child: IntrinsicWidth(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              for (LMMenuItemUI menuItem
-                                                  in widget.menuItems!)
-                                                ListTile(
-                                                  onTap: () {
-                                                    menuItem.onTap();
-                                                    _menuController.hideMenu();
-                                                  },
-                                                  leading: menuItem.leading,
-                                                  title: menuItem.title,
-                                                  splashColor: Colors.grey
-                                                      .withOpacity(0.5),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              )
-                            : const SizedBox(),
+                      child: ContextMenuArea(
+                        width: 60.w,
+                        verticalPadding: 2.h,
+                        // controller: widget.menuController ?? _menuController,
+                        // pressType: PressType.longPress,
+                        // showArrow: false,
+                        // verticalMargin: 2.h,
+                        // horizontalMargin: isSent ? 2.w : 18.w,
+                        builder: (context) => !isDeleted
+                            ? [
+                                for (LMMenuItemUI menuItem in widget.menuItems!)
+                                  ListTile(
+                                    onTap: () {
+                                      menuItem.onTap();
+                                      Navigator.pop(context);
+                                    },
+                                    leading: menuItem.leading,
+                                    title: menuItem.title,
+                                    splashColor: Colors.grey.withOpacity(0.5),
+                                  ),
+                                  kVerticalPaddingSmall,
+                              ]
+                            : [const SizedBox()],
                         child: Container(
                           constraints: BoxConstraints(
                             minHeight: 4.h,
