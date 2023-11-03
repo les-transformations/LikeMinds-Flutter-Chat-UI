@@ -18,6 +18,8 @@ export 'common/sheets/group_detail_bottom_sheet.dart';
 
 export 'common/profile_picture.dart';
 
+export 'common/menu/menu.dart';
+
 export 'chatroom/chatroom_topic.dart';
 
 // export 'media/document.dart';

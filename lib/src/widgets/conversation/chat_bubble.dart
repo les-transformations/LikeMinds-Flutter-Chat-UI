@@ -1,10 +1,7 @@
-import 'package:contextmenu/contextmenu.dart';
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:likeminds_chat_ui_fl/src/models/menu_item_model.dart';
 import 'package:swipe_to_action/swipe_to_action.dart';
 
 class LMChatBubble extends StatefulWidget {
@@ -22,9 +19,8 @@ class LMChatBubble extends StatefulWidget {
     this.reactionButton,
     this.outsideTitle,
     this.outsideFooter,
-    this.menu,
-    this.menuController,
     this.menuItems,
+    this.menuDecoration,
     this.onReply,
     this.onEdit,
     this.onLongPress,
@@ -58,10 +54,8 @@ class LMChatBubble extends StatefulWidget {
   final LMTextView? outsideTitle;
   final Widget? outsideFooter;
   final Widget? mediaWidget;
-
-  final CustomPopupMenuController? menuController;
-  final Widget? menu;
   final List<LMMenuItemUI>? menuItems;
+  final LMMenuDecoration? menuDecoration;
   final Function(Conversation replyingTo)? onReply;
   final Function(Conversation editConversation)? onEdit;
   final Function(Conversation conversation)? onLongPress;
@@ -91,8 +85,6 @@ class _LMChatBubbleState extends State<LMChatBubble> {
   Conversation? replyingTo;
   User? sender;
   User? currentUser;
-  late CustomPopupMenuController _menuController;
-
   bool isSent = false;
   bool isDeleted = false;
   bool isEdited = false;
@@ -107,7 +99,6 @@ class _LMChatBubbleState extends State<LMChatBubble> {
     replyingTo = widget.replyingTo;
     isEdited = widget.conversation.isEdited ?? false;
     isDeleted = widget.conversation.deletedByUserId != null;
-    _menuController = CustomPopupMenuController();
   }
 
   @override
@@ -190,29 +181,9 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                     const SizedBox(width: 4),
                     AbsorbPointer(
                       absorbing: isDeleted,
-                      child: ContextMenuArea(
-                        width: 60.w,
-                        verticalPadding: 2.h,
-                        // controller: widget.menuController ?? _menuController,
-                        // pressType: PressType.longPress,
-                        // showArrow: false,
-                        // verticalMargin: 2.h,
-                        // horizontalMargin: isSent ? 2.w : 18.w,
-                        builder: (context) => !isDeleted
-                            ? [
-                                for (LMMenuItemUI menuItem in widget.menuItems!)
-                                  ListTile(
-                                    onTap: () {
-                                      menuItem.onTap();
-                                      Navigator.pop(context);
-                                    },
-                                    leading: menuItem.leading,
-                                    title: menuItem.title,
-                                    splashColor: Colors.grey.withOpacity(0.5),
-                                  ),
-                                  kVerticalPaddingSmall,
-                              ]
-                            : [const SizedBox()],
+                      child: LMMenu(
+                        menuItems: widget.menuItems ?? [],
+                        menuDecoration: widget.menuDecoration,
                         child: Container(
                           constraints: BoxConstraints(
                             minHeight: 4.h,
