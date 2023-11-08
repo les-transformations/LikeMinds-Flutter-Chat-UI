@@ -8,9 +8,9 @@ import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
 class TaggingHelper {
   static final RegExp tagRegExp = RegExp(r'@([^<>~]+)~');
   static const String notificationTagRoute =
-      r'<<([^<>]+)\|route://([^<>]+)/([a-zA-Z-0-9]+)>>';
+      r'<<([^<>]+)\|route://([^<>]+)/([a-zA-Z-0-9]+)>>|<<([^<>]+)\|route://participants>>';
   static const String tagRoute =
-      r'<<([^<>]+)\|route://member/([a-zA-Z-0-9]+)>>';
+      r'<<([^<>]+)\|route://member/([a-zA-Z-0-9]+)>>|<<([^<>]+)\|route://participants>>';
   static const String linkRoute =
       r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+';
 
@@ -36,13 +36,17 @@ class TaggingHelper {
   /// Decodes the string with the user tags and returns the decoded string
   static Map<String, String> decodeString(String string) {
     Map<String, String> result = {};
-    final Iterable<RegExpMatch> matches =
-        RegExp(notificationTagRoute).allMatches(string);
+    final Iterable<RegExpMatch> matches = RegExp(tagRoute).allMatches(string);
     for (final match in matches) {
-      final String tag = match.group(1)!;
-      final String id = match.group(3)!;
-      string = string.replaceAll('<<$tag|route://member/$id>>', '@$tag');
-      result.addAll({tag: id});
+      final String tag = match.group(1) ?? match.group(3)!;
+      final String? id = match.group(2);
+      if (id != null) {
+        string = string.replaceAll('<<$tag|route://member/$id>>', '@$tag');
+      } else {
+        string =
+            string.replaceAll('<<@participants|route://participants>', '@$tag');
+      }
+      result.addAll({tag: id ?? ''});
     }
     return result;
   }
@@ -52,11 +56,16 @@ class TaggingHelper {
     final Iterable<RegExpMatch> matches =
         RegExp(notificationTagRoute).allMatches(string);
     for (final match in matches) {
-      final String tag = match.group(1)!;
-      final String mid = match.group(2)!;
-      final String id = match.group(3)!;
-      string = string.replaceAll('<<$tag|route://$mid/$id>>', '@$tag');
-      result.addAll({tag: id});
+      final String tag = match.group(1) ?? match.group(4)!;
+      final String? mid = match.group(2);
+      final String? id = match.group(3);
+      if (id != null) {
+        string = string.replaceAll('<<$tag|route://$mid/$id>>', '@$tag');
+      } else {
+        string =
+            string.replaceAll('<<@participants|route://participants>', '@$tag');
+      }
+      result.addAll({tag: id ?? ''});
     }
     return result;
   }
@@ -82,10 +91,14 @@ class TaggingHelper {
 
     for (final match in matches) {
       final String tag = match.group(1)!;
-      final String mid = match.group(2)!;
-      final String id = match.group(3)!;
-      text = text.replaceAll(
+      final String? mid = match.group(2);
+      final String? id = match.group(3);
+      if(id!=null) {
+        text = text.replaceAll(
           '<<$tag|route://$mid/$id>>', withTilde ? '@$tag~' : '@$tag');
+      } else {
+        text = text.replaceAll('<<@participants|route://participants>', '@$tag');
+      }
     }
     return text;
   }
@@ -97,9 +110,14 @@ class TaggingHelper {
 
     for (final match in matches) {
       final String tag = match.group(1)!;
-      final String mid = match.group(2)!;
-      final String id = match.group(3)!;
-      text = text.replaceAll('<<$tag|route://$mid/$id>>', '@$tag~');
+      final String? mid = match.group(2);
+      final String? id = match.group(3);
+      if(id!=null) {
+        text = text.replaceAll('<<$tag|route://$mid/$id>>', '@$tag~');
+      } else {
+
+      text = text.replaceAll('<<@participants|route://participants>', '@$tag');
+      }
     }
     return text;
   }
