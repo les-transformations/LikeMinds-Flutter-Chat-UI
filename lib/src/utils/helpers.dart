@@ -245,7 +245,6 @@ static String getFirstValidLinkFromString(String text) {
 }
 
 static LinkifyElement? extractLinkAndEmailFromString(String text) {
-  debugPrint("text: $text");
   final links = linkify(
     text,
     options: const LinkifyOptions(
