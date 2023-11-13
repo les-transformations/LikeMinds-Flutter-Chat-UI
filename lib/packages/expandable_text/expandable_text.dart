@@ -8,6 +8,7 @@ import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/constants.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/helpers.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
+import 'package:linkify/linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import './text_parser.dart';
@@ -399,8 +400,9 @@ class ExpandableTextState extends State<ExpandableText>
   }
 
   List<TextSpan> extractLinksAndTags(String text) {
-    // final regExpression = RegExp(
-    //     r'<<([a-z\sA-Z]+)\|route://member/([a-zA-Z\0-9]+)>>|<<([a-z\sA-Z\s0-9]+)\|route://member/([0-9]+)>>');
+    const String regexLinksAndTags =
+        r'(?:(?:http|https|ftp|www)\:\/\/)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?[^\s\n]+|[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}|<<([^<>]+)\|route://member/([a-zA-Z-0-9]+)>>';
+    RegExp regExp = RegExp(regexLinksAndTags);
     List<TextSpan> textSpans = [];
     int lastIndex = 0;
     for (Match match in regExp.allMatches(text)) {
@@ -416,6 +418,17 @@ class ExpandableTextState extends State<ExpandableText>
         ));
       }
       bool isTag = link != null && link[0] == '<';
+
+      //if it is a valid link using linkify and if that is not then add normal TextSpan
+      if (!isTag &&
+          TaggingHelper.extractLinkAndEmailFromString(link ?? '') == null) {
+        textSpans.add(TextSpan(
+          text: text.substring(startIndex, endIndex),
+          style: widget.style,
+        ));
+        lastIndex = endIndex;
+        continue;
+      }
       // Add a TextSpan for the URL
       textSpans.add(TextSpan(
         text: isTag ? TaggingHelper.decodeString(link).keys.first : link,
@@ -429,10 +442,19 @@ class ExpandableTextState extends State<ExpandableText>
         recognizer: TapGestureRecognizer()
           ..onTap = () async {
             if (!isTag) {
-              String checkLink = getFirstValidLinkFromString(link ?? '');
-              if (Uri.parse(checkLink).isAbsolute) {
+              final checkLink =
+                  TaggingHelper.extractLinkAndEmailFromString(link ?? '');
+              debugPrint('checkLink: $checkLink');
+              if (checkLink is UrlElement) {
+                if (Uri.parse(checkLink.url).isAbsolute) {
+                  launchUrl(
+                    Uri.parse(checkLink.url),
+                    mode: LaunchMode.externalApplication,
+                  );
+                }
+              } else if (checkLink is EmailElement) {
                 launchUrl(
-                  Uri.parse(checkLink),
+                  Uri.parse('mailto:${checkLink.emailAddress}'),
                   mode: LaunchMode.externalApplication,
                 );
               }

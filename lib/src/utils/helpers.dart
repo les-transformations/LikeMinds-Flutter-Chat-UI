@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
+import 'package:linkify/linkify.dart';
 
 class TaggingHelper {
   static final RegExp tagRegExp = RegExp(r'@([^<>~]+)~');
@@ -198,10 +199,10 @@ class TaggingHelper {
 
     return textSpans;
   }
-}
 
-List<String> extractLinkFromString(String text) {
-  RegExp exp = RegExp(TaggingHelper.linkRoute);
+
+static List<String> extractLinkFromString(String text) {
+  RegExp exp = RegExp(linkRoute);
   Iterable<RegExpMatch> matches = exp.allMatches(text);
   List<String> links = [];
   for (var match in matches) {
@@ -217,7 +218,7 @@ List<String> extractLinkFromString(String text) {
   }
 }
 
-String getFirstValidLinkFromString(String text) {
+static String getFirstValidLinkFromString(String text) {
   try {
     List<String> links = extractLinkFromString(text);
     List<String> validLinks = [];
@@ -241,6 +242,27 @@ String getFirstValidLinkFromString(String text) {
   } catch (e) {
     return '';
   }
+}
+
+static LinkifyElement? extractLinkAndEmailFromString(String text) {
+  debugPrint("text: $text");
+  final links = linkify(
+    text,
+    options: const LinkifyOptions(
+      looseUrl: true,
+      excludeLastPeriod: true,
+    ),
+  );
+  if (links.isNotEmpty) {
+    final emails = linkify(text);
+    if (emails.isNotEmpty && emails.first is EmailElement) {
+      return emails.first;
+    } else if (links.first is UrlElement) {
+      return links.first;
+    }
+  }
+  return null;
+}
 }
 
 class PostHelper {
