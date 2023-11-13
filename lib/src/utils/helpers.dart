@@ -36,9 +36,9 @@ class TaggingHelper {
   /// Decodes the string with the user tags and returns the decoded string
   static Map<String, String> decodeString(String string) {
     Map<String, String> result = {};
-    final Iterable<RegExpMatch> matches = RegExp(tagRoute).allMatches(string);
+    final Iterable<RegExpMatch> matches = RegExp(notificationTagRoute).allMatches(string);
     for (final match in matches) {
-      final String tag = match.group(1) ?? match.group(3)!;
+      final String tag = match.group(1) ?? match.group(4)!;
       final String? id = match.group(2);
       if (id != null) {
         string = string.replaceAll('<<$tag|route://member/$id>>', '@$tag');
