@@ -25,6 +25,7 @@ dependencies:
   url_launcher: 
   swipe_to_action:
   video_thumbnail:
+  linkify:
 
 dev_dependencies:
   flutter_test:
