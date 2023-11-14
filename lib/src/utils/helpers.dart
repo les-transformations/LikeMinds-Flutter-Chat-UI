@@ -251,12 +251,13 @@ static LinkifyElement? extractLinkAndEmailFromString(String text) {
       looseUrl: true,
       excludeLastPeriod: true,
     ),
+    linkifiers: [
+      EmailLinkifier(),
+      UrlLinkifier(),
+    ]
   );
   if (links.isNotEmpty) {
-    final emails = linkify(text);
-    if (emails.isNotEmpty && emails.first is EmailElement) {
-      return emails.first;
-    } else if (links.first is UrlElement) {
+    if(links.first is EmailElement || links.first is UrlElement) {
       return links.first;
     }
   }
