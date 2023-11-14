@@ -19,8 +19,7 @@ class LMChatBubble extends StatefulWidget {
     this.reactionButton,
     this.outsideTitle,
     this.outsideFooter,
-    this.menuItems,
-    this.menuDecoration,
+    this.menuBuilder,
     this.onReply,
     this.onEdit,
     this.onLongPress,
@@ -54,8 +53,7 @@ class LMChatBubble extends StatefulWidget {
   final LMTextView? outsideTitle;
   final Widget? outsideFooter;
   final Widget? mediaWidget;
-  final List<LMMenuItemUI>? menuItems;
-  final LMMenuDecoration? menuDecoration;
+  final LMMenu Function(Widget child)? menuBuilder;
   final Function(Conversation replyingTo)? onReply;
   final Function(Conversation editConversation)? onEdit;
   final Function(Conversation conversation)? onLongPress;
@@ -181,179 +179,9 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                     const SizedBox(width: 4),
                     AbsorbPointer(
                       absorbing: isDeleted,
-                      child: LMMenu(
-                        menuItems: widget.menuItems ?? [],
-                        menuDecoration: widget.menuDecoration,
-                        child: Container(
-                          constraints: BoxConstraints(
-                            minHeight: 4.h,
-                            minWidth: 10.w,
-                            maxWidth: 60.w,
-                          ),
-                          padding: EdgeInsets.all(
-                            widget.mediaWidget != null ? 8.0 : 12.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: widget.backgroundColor ?? Colors.white,
-                            borderRadius: widget.borderRadius ??
-                                BorderRadius.circular(
-                                  widget.borderRadiusNum ?? 6,
-                                ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: isSent
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            children: [
-                              widget.replyItem == null
-                                  ? replyingTo != null
-                                      ? isDeleted
-                                          ? const SizedBox.shrink()
-                                          : LMReplyItem(
-                                              replyToConversation: replyingTo!,
-                                              backgroundColor: Colors.white,
-                                              highlightColor: Theme.of(context)
-                                                  .primaryColor,
-                                              title: LMTextView(
-                                                text: replyingTo!.member!.name,
-                                                textStyle: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              subtitle: LMTextView(
-                                                text: replyingTo!.answer,
-                                                textStyle: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            )
-                                      : const SizedBox.shrink()
-                                  : isDeleted
-                                      ? const SizedBox.shrink()
-                                      : widget.replyItem!,
-                              replyingTo != null
-                                  ? const SizedBox(height: 8)
-                                  : const SizedBox.shrink(),
-                              isSent
-                                  ? const SizedBox()
-                                  : widget.title ?? const SizedBox.shrink(),
-                              isDeleted
-                                  ? const SizedBox.shrink()
-                                  : ((widget.mediaWidget != null &&
-                                              widget.content != null) ||
-                                          widget.conversation.hasFiles!)
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 0),
-                                          child: widget.mediaWidget,
-                                        )
-                                      : const SizedBox(),
-                              isDeleted
-                                  ? widget.deletedText != null
-                                      ? widget.deletedText!
-                                      : conversation!.deletedByUserId ==
-                                              conversation!.userId
-                                          ? LMTextView(
-                                              text: currentUser!.id ==
-                                                      conversation!
-                                                          .deletedByUserId
-                                                  ? "You deleted this message"
-                                                  : "This message was deleted",
-                                              textStyle: widget
-                                                  .content!.textStyle!
-                                                  .copyWith(
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            )
-                                          : LMTextView(
-                                              text:
-                                                  "This message was deleted by a community managers",
-                                              textStyle: widget
-                                                  .content!.textStyle!
-                                                  .copyWith(
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            )
-                                  : replyingTo != null
-                                      ? Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                              top: widget.mediaWidget != null
-                                                  ? 4.0
-                                                  : 0,
-                                            ),
-                                            child: widget.content ??
-                                                LMChatContent(
-                                                  conversation:
-                                                      widget.conversation,
-                                                  linkStyle: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                  textStyle: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.only(
-                                              top: widget.mediaWidget != null
-                                                  ? 4.0
-                                                  : 0),
-                                          child: widget.content ??
-                                              LMChatContent(
-                                                conversation:
-                                                    widget.conversation,
-                                                linkStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                textStyle: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                visibleLines: 4,
-                                                animation: true,
-                                              ),
-                                        ),
-                              if (widget.footer != null &&
-                                  widget.footer!.isNotEmpty &&
-                                  !isDeleted)
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: widget.footer!,
-                                ),
-                              ((widget.conversation.hasFiles == null ||
-                                          !widget.conversation.hasFiles!) ||
-                                      (widget.conversation
-                                                  .attachmentsUploaded !=
-                                              null &&
-                                          widget.conversation
-                                              .attachmentsUploaded!) ||
-                                      isDeleted)
-                                  ? const SizedBox()
-                                  : const LMIcon(
-                                      type: LMIconType.icon,
-                                      icon: Icons.timer_outlined,
-                                      size: 12,
-                                      boxSize: 18,
-                                      boxPadding: 6,
-                                    ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      child: widget.menuBuilder != null
+                          ? widget.menuBuilder!(chatBubbleContent())
+                          : chatBubbleContent(),
                     ),
                     const SizedBox(width: 4),
                     isSent
@@ -375,5 +203,151 @@ class _LMChatBubbleState extends State<LMChatBubble> {
       ),
     );
     // );
+  }
+
+  Container chatBubbleContent() {
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: 4.h,
+        minWidth: 10.w,
+        maxWidth: 60.w,
+      ),
+      padding: EdgeInsets.all(
+        widget.mediaWidget != null ? 8.0 : 12.0,
+      ),
+      decoration: BoxDecoration(
+        color: widget.backgroundColor ?? Colors.white,
+        borderRadius: widget.borderRadius ??
+            BorderRadius.circular(
+              widget.borderRadiusNum ?? 6,
+            ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            isSent ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          widget.replyItem == null
+              ? replyingTo != null
+                  ? isDeleted
+                      ? const SizedBox.shrink()
+                      : LMReplyItem(
+                          replyToConversation: replyingTo!,
+                          backgroundColor: Colors.white,
+                          highlightColor: Theme.of(context).primaryColor,
+                          title: LMTextView(
+                            text: replyingTo!.member!.name,
+                            textStyle: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: LMTextView(
+                            text: replyingTo!.answer,
+                            textStyle: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        )
+                  : const SizedBox.shrink()
+              : isDeleted
+                  ? const SizedBox.shrink()
+                  : widget.replyItem!,
+          replyingTo != null
+              ? const SizedBox(height: 8)
+              : const SizedBox.shrink(),
+          isSent ? const SizedBox() : widget.title ?? const SizedBox.shrink(),
+          isDeleted
+              ? const SizedBox.shrink()
+              : ((widget.mediaWidget != null && widget.content != null) ||
+                      widget.conversation.hasFiles!)
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 0),
+                      child: widget.mediaWidget,
+                    )
+                  : const SizedBox(),
+          isDeleted
+              ? widget.deletedText != null
+                  ? widget.deletedText!
+                  : conversation!.deletedByUserId == conversation!.userId
+                      ? LMTextView(
+                          text: currentUser!.id == conversation!.deletedByUserId
+                              ? "You deleted this message"
+                              : "This message was deleted",
+                          textStyle: widget.content!.textStyle!.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        )
+                      : LMTextView(
+                          text:
+                              "This message was deleted by a community managers",
+                          textStyle: widget.content!.textStyle!.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        )
+              : replyingTo != null
+                  ? Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: widget.mediaWidget != null ? 4.0 : 0,
+                        ),
+                        child: widget.content ??
+                            LMChatContent(
+                              conversation: widget.conversation,
+                              linkStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(
+                          top: widget.mediaWidget != null ? 4.0 : 0),
+                      child: widget.content ??
+                          LMChatContent(
+                            conversation: widget.conversation,
+                            linkStyle: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            visibleLines: 4,
+                            animation: true,
+                          ),
+                    ),
+          if (widget.footer != null && widget.footer!.isNotEmpty && !isDeleted)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: widget.footer!,
+            ),
+          ((widget.conversation.hasFiles == null ||
+                      !widget.conversation.hasFiles!) ||
+                  (widget.conversation.attachmentsUploaded != null &&
+                      widget.conversation.attachmentsUploaded!) ||
+                  isDeleted)
+              ? const SizedBox()
+              : const LMIcon(
+                  type: LMIconType.icon,
+                  icon: Icons.timer_outlined,
+                  size: 12,
+                  boxSize: 18,
+                  boxPadding: 6,
+                ),
+        ],
+      ),
+    );
   }
 }

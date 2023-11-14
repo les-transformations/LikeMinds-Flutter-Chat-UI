@@ -6,11 +6,28 @@ class LMMenu extends StatelessWidget {
     super.key,
     required this.menuItems,
     required this.child,
-    this.menuDecoration,
+    this.elevation,
+    this.shadowColor,
+    this.surfaceTintColor,
+    this.semanticLabel,
+    this.shape,
+    this.color,
+    this.constraints,
+    this.clipBehavior,
+    this.itemPadding,
   });
+
   final List<LMMenuItemUI> menuItems;
   final Widget child;
-  final LMMenuDecoration? menuDecoration;
+  final double? elevation;
+  final Color? shadowColor;
+  final Color? surfaceTintColor;
+  final String? semanticLabel;
+  final ShapeBorder? shape;
+  final Color? color;
+  final BoxConstraints? constraints;
+  final Clip? clipBehavior;
+  final EdgeInsets? itemPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +47,21 @@ class LMMenu extends StatelessWidget {
           showMenu(
               context: context,
               position: position,
-              elevation: menuDecoration?.elevation,
-              shadowColor: menuDecoration?.shadowColor,
-              surfaceTintColor: menuDecoration?.surfaceTintColor,
-              semanticLabel: menuDecoration?.semanticLabel,
-              shape: menuDecoration?.shape,
-              color: menuDecoration?.color,
-              constraints: menuDecoration?.constraints,
-              clipBehavior: menuDecoration?.clipBehavior ?? Clip.none,
+              elevation: elevation,
+              shadowColor: shadowColor,
+              surfaceTintColor: surfaceTintColor,
+              semanticLabel: semanticLabel,
+              shape: shape,
+              color: color,
+              constraints: constraints,
+              clipBehavior: clipBehavior ?? Clip.none,
               items: [
                 for (LMMenuItemUI menuItem in menuItems)
                   PopupMenuItem(
                     onTap: () {
                       menuItem.onTap();
                     },
-                    padding: menuDecoration?.itemPadding ?? EdgeInsets.zero,
+                    padding: itemPadding ?? EdgeInsets.zero,
                     child: ListTile(
                       leading: menuItem.leading,
                       title: menuItem.title,
