@@ -3,8 +3,9 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
+import 'package:likeminds_chat_ui_fl/packages/linkify/linkify.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:linkify/linkify.dart';
+
 
 class TaggingHelper {
   static final RegExp tagRegExp = RegExp(r'@([^<>~]+)~');
@@ -245,6 +246,7 @@ static String getFirstValidLinkFromString(String text) {
 }
 
 static LinkifyElement? extractLinkAndEmailFromString(String text) {
+  debugPrint("=======> $text<=======");
   final links = linkify(
     text,
     options: const LinkifyOptions(
@@ -257,6 +259,9 @@ static LinkifyElement? extractLinkAndEmailFromString(String text) {
     ]
   );
   if (links.isNotEmpty) {
+    for(var link in links) {
+      debugPrint("=======> $link<=======");
+    }
     if(links.first is EmailElement || links.first is UrlElement) {
       return links.first;
     }

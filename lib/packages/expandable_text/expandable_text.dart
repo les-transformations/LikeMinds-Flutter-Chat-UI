@@ -5,10 +5,10 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
+import 'package:likeminds_chat_ui_fl/packages/linkify/linkify.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/constants.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/helpers.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
-import 'package:linkify/linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import './text_parser.dart';
