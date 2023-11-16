@@ -6,7 +6,6 @@ import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
 import 'package:likeminds_chat_ui_fl/packages/linkify/linkify.dart';
 import 'package:likeminds_chat_ui_fl/src/utils/theme.dart';
 
-
 class TaggingHelper {
   static final RegExp tagRegExp = RegExp(r'@([^<>~]+)~');
   static const String notificationTagRoute =
@@ -38,7 +37,8 @@ class TaggingHelper {
   /// Decodes the string with the user tags and returns the decoded string
   static Map<String, String> decodeString(String string) {
     Map<String, String> result = {};
-    final Iterable<RegExpMatch> matches = RegExp(notificationTagRoute).allMatches(string);
+    final Iterable<RegExpMatch> matches =
+        RegExp(notificationTagRoute).allMatches(string);
     for (final match in matches) {
       final String tag = match.group(1) ?? match.group(4)!;
       final String? id = match.group(2);
@@ -95,11 +95,12 @@ class TaggingHelper {
       final String tag = match.group(1)!;
       final String? mid = match.group(2);
       final String? id = match.group(3);
-      if(id!=null) {
+      if (id != null) {
         text = text.replaceAll(
-          '<<$tag|route://$mid/$id>>', withTilde ? '@$tag~' : '@$tag');
+            '<<$tag|route://$mid/$id>>', withTilde ? '@$tag~' : '@$tag');
       } else {
-        text = text.replaceAll('<<@participants|route://participants>', '@$tag');
+        text =
+            text.replaceAll('<<@participants|route://participants>', '@$tag');
       }
     }
     return text;
@@ -114,11 +115,11 @@ class TaggingHelper {
       final String tag = match.group(1)!;
       final String? mid = match.group(2);
       final String? id = match.group(3);
-      if(id!=null) {
+      if (id != null) {
         text = text.replaceAll('<<$tag|route://$mid/$id>>', '@$tag~');
       } else {
-
-      text = text.replaceAll('<<@participants|route://participants>', '@$tag');
+        text =
+            text.replaceAll('<<@participants|route://participants>', '@$tag');
       }
     }
     return text;
@@ -201,73 +202,75 @@ class TaggingHelper {
     return textSpans;
   }
 
-
-static List<String> extractLinkFromString(String text) {
-  RegExp exp = RegExp(linkRoute);
-  Iterable<RegExpMatch> matches = exp.allMatches(text);
-  List<String> links = [];
-  for (var match in matches) {
-    String link = text.substring(match.start, match.end);
-    if (link.isNotEmpty) {
-      links.add(link);
+  static List<String> extractLinkFromString(String text) {
+    RegExp exp = RegExp(linkRoute);
+    Iterable<RegExpMatch> matches = exp.allMatches(text);
+    List<String> links = [];
+    for (var match in matches) {
+      String link = text.substring(match.start, match.end);
+      if (link.isNotEmpty) {
+        links.add(link);
+      }
+    }
+    if (links.isNotEmpty) {
+      return links;
+    } else {
+      return [];
     }
   }
-  if (links.isNotEmpty) {
-    return links;
-  } else {
-    return [];
-  }
-}
 
-static String getFirstValidLinkFromString(String text) {
-  try {
-    List<String> links = extractLinkFromString(text);
-    List<String> validLinks = [];
-    String validLink = '';
-    if (links.isNotEmpty) {
-      for (String link in links) {
-        if (Uri.parse(link).isAbsolute) {
-          validLinks.add(link);
-        } else {
-          link = "https://$link";
+  static String getFirstValidLinkFromString(String text) {
+    try {
+      List<String> links = extractLinkFromString(text);
+      List<String> validLinks = [];
+      String validLink = '';
+      if (links.isNotEmpty) {
+        for (String link in links) {
           if (Uri.parse(link).isAbsolute) {
             validLinks.add(link);
+          } else {
+            link = "https://$link";
+            if (Uri.parse(link).isAbsolute) {
+              validLinks.add(link);
+            }
           }
         }
       }
+      if (validLinks.isNotEmpty) {
+        validLink = validLinks.first;
+      }
+      return validLink;
+    } catch (e) {
+      return '';
     }
-    if (validLinks.isNotEmpty) {
-      validLink = validLinks.first;
-    }
-    return validLink;
-  } catch (e) {
-    return '';
   }
-}
 
-static LinkifyElement? extractLinkAndEmailFromString(String text) {
-  debugPrint("=======> $text<=======");
-  final links = linkify(
-    text,
-    options: const LinkifyOptions(
-      looseUrl: true,
-      excludeLastPeriod: true,
-    ),
-    linkifiers: [
-      EmailLinkifier(),
-      UrlLinkifier(),
-    ]
-  );
-  if (links.isNotEmpty) {
-    for(var link in links) {
-      debugPrint("=======> $link<=======");
+  static LinkifyElement? extractLinkAndEmailFromString(String text) {
+    final urls = linkify(text, linkifiers: [
+      const EmailLinkifier(),
+      const UrlLinkifier(),
+    ]);
+    if (urls.isNotEmpty) {
+      if (urls.first is EmailElement || urls.first is UrlElement) {
+        return urls.first;
+      }
     }
-    if(links.first is EmailElement || links.first is UrlElement) {
-      return links.first;
+    final links = linkify(text,
+        options: const LinkifyOptions(
+          looseUrl: true,
+          excludeLastPeriod: true,
+        ),
+        linkifiers: [
+          const EmailLinkifier(),
+          const UrlLinkifier(),
+        ]);
+    if (links.isNotEmpty) {
+      if (links.first is EmailElement || links.first is UrlElement) {
+        return links.first;
+      }
     }
+    return null;
   }
-  return null;
-}
 }
 
 class PostHelper {
