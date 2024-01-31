@@ -309,25 +309,48 @@ class _LMChatBubbleState extends State<LMChatBubble> {
                             ),
                       ),
                     )
-                  : Padding(
-                      padding: EdgeInsets.only(
-                          top: widget.mediaWidget != null ? 4.0 : 0),
-                      child: widget.content ??
-                          LMChatContent(
-                            conversation: widget.conversation,
-                            linkStyle: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
+                  : widget.mediaWidget != null
+                      ?   Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                        padding: EdgeInsets.only(
+                            top: widget.mediaWidget != null ? 4.0 : 0),
+                        child: widget.content ??
+                            LMChatContent(
+                              conversation: widget.conversation,
+                              linkStyle: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              visibleLines: 4,
+                              animation: true,
                             ),
-                            textStyle: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            visibleLines: 4,
-                            animation: true,
-                          ),
-                    ),
+                                          ),
+                      )
+                      : Padding(
+                          padding: EdgeInsets.only(
+                              top: widget.mediaWidget != null ? 4.0 : 0),
+                          child: widget.content ??
+                              LMChatContent(
+                                conversation: widget.conversation,
+                                linkStyle: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                textStyle: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                visibleLines: 4,
+                                animation: true,
+                              ),
+                        ),
           if (widget.footer != null && widget.footer!.isNotEmpty && !isDeleted)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
