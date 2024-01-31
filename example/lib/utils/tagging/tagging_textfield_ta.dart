@@ -220,18 +220,11 @@ class _LMTextFieldState extends State<LMTextField> {
               textValue += "@${suggestion.name!}~";
             }
             _controller.text = '$textValue ';
-            _controller.value = _controller.value.copyWith(
-              text: _controller.text,
-              // selection: TextSelection.collapsed(
-              //   offset: _controller.text.length,
-              // ),
-            );
-            // _controller.selection = TextSelection.fromPosition(
-            //     TextPosition(offset: _controller.text.length));
+            _controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: _controller.text.length));
             tagValue = '';
             textValue = _controller.value.text;
             page = 1;
-            debugPrint(_controller.text);
             // FocusScope.of(context).requestFocus(_focusNode);
           });
         }),
