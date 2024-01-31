@@ -131,9 +131,9 @@ class TaggingHelper {
         RegExp(notificationTagRoute).allMatches(text);
     List<UserTag> userTags = [];
     for (final match in matches) {
-      final String tag = match.group(1)!;
-      final String mid = match.group(2)!;
-      final String id = match.group(3)!;
+      final String? tag = match.group(1);
+      final String? mid = match.group(2);
+      final String? id = match.group(3);
       text = text.replaceAll(
           '<<$tag|route://$mid/$id>>', withTilde ? '@$tag~' : '@$tag');
       userTags.add(UserTag(userUniqueId: id, name: tag));
@@ -147,8 +147,8 @@ class TaggingHelper {
     List<UserTag> userTags = [];
     for (final match in matches) {
       final String tag = match.group(1)!;
-      final String mid = match.group(2)!;
-      final String id = match.group(3)!;
+      final String? mid = match.group(2);
+      final String? id = match.group(3);
       userTags.add(UserTag(userUniqueId: id, name: tag));
     }
     return userTags;

@@ -151,7 +151,7 @@ class _LMTextFieldState extends State<LMTextField> {
                 border: InputBorder.none,
               ),
           onChanged: ((value) {
-            widget.onChange!(value);
+            widget.onChange?.call(value);
             final int newTagCount = '@'.allMatches(value).length;
             final int completeCount = '~'.allMatches(value).length;
             if (newTagCount == completeCount) {
@@ -170,7 +170,6 @@ class _LMTextFieldState extends State<LMTextField> {
           return await _getSuggestions(suggestion);
         },
         keepSuggestionsOnSuggestionSelected: true,
-
         itemBuilder: ((context, opt) {
           return Container(
             decoration: BoxDecoration(
@@ -226,6 +225,7 @@ class _LMTextFieldState extends State<LMTextField> {
             tagValue = '';
             textValue = _controller.value.text;
             page = 1;
+            // FocusScope.of(context).requestFocus(_focusNode);
           });
         }),
       ),
