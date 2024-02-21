@@ -25,7 +25,7 @@ import 'package:flutter_chat_ui_sample/widgets/chatroom_menu.dart';
 import 'package:flutter_chat_ui_sample/widgets/chatroom_skeleton.dart';
 import 'package:flutter_chat_ui_sample/widgets/media/document/document_preview_factory.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:likeminds_chat_fl/likeminds_chat_fl.dart';
+import 'package:likeminds_chat_fl/likeminds_chat_fl.dart' hide ConversationState;
 import 'package:likeminds_chat_ui_fl/likeminds_chat_ui_fl.dart';
 import 'package:overlay_support/overlay_support.dart';
 
